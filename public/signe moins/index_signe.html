@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test diagnostique</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="https://cdn.glitch.com/52b0fe76-8eb9-492e-bc3c-2511b85d3002%2Fsurvey-2316468_960_720.png?v=1626133345559">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+  <script src="https://kit.fontawesome.com/cec7e13ade.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Andika">
+    <link rel="stylesheet" href="signe moins/questions/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+
+</head>
+
+<body id="body">
+
+<h1 id = "titre_questionnaire">Test sur le signe moins</h1>
+
+  <div id= "background">
+    <img src="signe moins/questions/images/icon-professor3.png" alt="image" id="icon_professor" title="partie professeur (pour créer une classe)">
+      <div id="margin" ></div>
+  <div id="espace"  ></div>
+        <i id= "next_arrow" class="fas fa-angle-double-right" onclick="score_connect_the_dots()"></i>
+ <div id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)" >  
+ </div>
+
+  <div id= "question_id" class= "question">
+    
+    
+<a href="/download" id="download"style="display:none">Appuyez ici pour download ! </a>
+<i class="fas fa-file-download" id="icon_download"></i>
+<a href="https://forms.office.com/r/dhNmMFtA4w" id="forms_prof" style='display:none'>Appuyez ici pour créer une classe ! </a>
+    
+<label id="greetings">Bienvenue à ce test diagnostique sur le signe moins</label>    
+<img src="signe moins/questions/images/droite-grad.png" alt="image" id="droite_grad" style="display:none">
+<img src="signe moins/questions/images/droite-repere.PNG" alt="image" id="droite_repere" style="display:none">
+<img src="signe moins/questions/images/signe-multiple.PNG" alt="image" id="signe_multiple" style="display:none">
+<img src="signe moins/questions/images/signe-single.PNG" alt="image" id="signe_single" style="display:none">
+<img src="signe moins/questions/images/complete-egalite-addition.PNG" alt="image" id="complete_egalite_addition" style="display:none">
+<img src="signe moins/questions/images/complete-egalite-multiplication.PNG" alt="image" id="complete_egalite_multiplication" style="display:none">
+<img src="signe moins/questions/images/traduction-probleme.PNG" alt="image" id="traduction_probleme" style="display:none">
+<img src="signe moins/questions/images/parasite1-img.PNG" alt="image" id="parasite1_img" style="display:none">
+<img src="signe moins/questions/images/distraction2.PNG" alt="image" id="soustraction_distraction_img" style="display:none">
+
+  <div id="input1" class="inputEventNew" >
+     <label class="field field_v2">
+    <input class="field__input" id="input_class" autocomplete="off" placeholder="ex: class_test">
+      <i id = "class_check" class="fas fa-check"></i> <i id= "class_wrong" class="fas fa-times"></i>
+    <span class="field__label-wrap">
+      <span class="field__label" id="span_champ_class">Entrez votre classe</span>
+    </span>
+  </label>      
+  </div>
+  <div class="clickEvent">
+    <button class="button" id="btn_class"  >Appuyez ici pour valider !</button>
+  </div>  
+<br>
+<div id="input2" class="inputEventNew">
+     <label class="field field_v2">
+    <input class="field__input" id="input_id" autocomplete="off" placeholder="ex: 23">
+        <i id = "Id_check" class="fas fa-check"></i> <i id= "Id_wrong" class="fas fa-times"></i>
+    <span class="field__label-wrap">
+      <span class="field__label" id ="span_champ_id">Entrez votre Id</span>
+    </span>
+  </label>      
+  </div>
+  <div class="clickEvent">
+    <button class="button" id="btn_id"  >Appuyez ici pour valider !</button>
+  </div>
+  </div>
+  </div>
+  <script>console.log(navigator.userAgent);
+  if(navigator.userAgent == "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 3.5.30729; Tablet PC 2.0; McAfee; Zoom 3.6.0; rv:11.0) like Gecko"){
+    swal("Ce site web ne fonctionne pas sur internet explorer. Veuillez changer de navigateur et utiliser Chrome/Firefox/Edge");
+  }else{
+swal("Consignes : ", "Entre le code classe que ton professeur t'a donné dans le champ ''classe'' et ton Id, également attribué par ton professeur, dans le champ Id ");
+  }</script>
+    <script id= "script_debut" src= "signe moins/questions/debut.js"></script>
+    <script id="script_referrence" src="signe moins/questions/reference.js"></script>
+    <script id="script_connect_the_dots" src="signe moins/questions/connect-the-dots.js"> </script>
+    <script id="script_vrai_faux" src="signe moins/questions/vrai-ou-faux.js"> </script>
+    <script id="script_drag_drop" src= "signe moins/questions/drag-drop.js"></script>
+    <script id="script_entoure_addition" src="signe moins/questions/entoure_addition.js"></script>
+    <script id= "script_droite_grad" src="signe moins/questions/droite-gradue.js"></script>
+    <script id="script_donne_oppose" src= "signe moins/questions/donne_oppose.js"></script>
+    <script id= "script_resous_addition" src="signe moins/questions/resous_addition.js"></script>
+    <script id="script_connect_multiple" src="signe moins/questions/connect-multiple.js"></script>
+    <script id="script_entoure_couleurs" src="signe moins/questions/entoure-couleurs.js"></script>
+    <script id="script_signe_multiple" src="signe moins/questions/signe_multiple.js"></script>
+    <script id ="script_nombres_opposes" src="signe moins/questions/nombres-opposes.js"></script>
+    <script id="script_droite_repere" src="signe moins/questions/droite-repere.js"></script>
+    <script id="script_complete_egalite" src="signe moins/questions/complete-egalite.js"></script>
+    <script id="script_traduction_probleme" src="signe moins/questions/traduction-probleme.js"></script>
+    <script id="script_range_croissant" src="signe moins/questions/range-croissant.js"></script>
+    <script id="script_graph_student" src="signe moins/questions/graph-student.js"></script>
+    <script id="script_graph_student" src="signe moins/questions/parasite1.js"></script>
+    <script src="signe moins/questions/soustraction-distraction.js" ></script>
+  
+</body>
+</html>

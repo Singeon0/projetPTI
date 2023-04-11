@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test diagnostique</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="https://cdn.glitch.com/52b0fe76-8eb9-492e-bc3c-2511b85d3002%2Fsurvey-2316468_960_720.png?v=1626133345559">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+  <script src="https://kit.fontawesome.com/cec7e13ade.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Andika">
+    <link rel="stylesheet" href="classification phylo/questions/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+</head>
+
+<body id="body">
+
+<h1 id = "titre_questionnaire">Classifications phylogénétiques</h1>
+
+  <div id= "background">
+    <img src="classification phylo/questions/images/icon-professor3.png" alt="image" id="icon_professor" title="partie professeur (pour créer une classe)">
+      <div id="margin" ></div>
+  <div id="espace"  ></div>
+        <i id= "next_arrow" class="fas fa-angle-double-right" onclick="score_connect_the_dots()"></i>
+ <div id="canvas" ondrop="drop(event)" ondragover="allowDrop(event)" >  
+ </div>
+
+  <div id= "question_id" class= "question">
+    
+    
+<a href="/download" id="download"style="display:none">Appuyez ici pour download ! </a>
+<i class="fas fa-file-download" id="icon_download"></i>
+<a href="https://forms.office.com/r/dhNmMFtA4w" id="forms_prof" style='display:none'>Appuyez ici pour créer une classe ! </a>
+    
+<label id="greetings">Bienvenue à ce test diagnostique sur la classification phylogénétique</label>    
+<img src="classification phylo/questions/images/formes-img2.PNG" alt="image" id="formes_img" style="display:none">
+<img src="classification phylo/questions/images/observe-animaux-img.PNG" alt="image" id="observe_animaux_img" style="display:none">
+<img src="classification phylo/questions/images/propositions-img.PNG" alt="image" id="propositions_img" style="display:none">
+<img src="classification phylo/questions/images/photographie-img.PNG" alt="image" id="photographie_img" style="display:none">
+<img src="classification phylo/questions/images/fruits-img.PNG" alt="image" id="fruits_img" style="display:none">
+<img src="classification phylo/questions/images/descriptif-img.PNG" alt="image" id="descriptif_img" style="display:none">
+<img src="classification phylo/questions/images/trier-vivant-img.PNG" alt="image" id="trier_vivant_img" style="display:none">
+<img src="classification phylo/questions/images/coche8-img.PNG" alt="image" id="coche8_img" style="display:none">
+<img src="classification phylo/questions/images/arbre-img.PNG" alt="image" id="arbre_img" style="display:none">
+<img src="classification phylo/questions/images/caractere-img.PNG" alt="image" id="caractere_img" style="display:none">
+<img src="classification phylo/questions/images/attributs-img.PNG" alt="image" id="attributs_img" style="display:none">
+<img src="classification phylo/questions/images/pattes-imgPNG.PNG" alt="image" id="pattes_img" style="display:none">
+<img src="classification phylo/questions/images/vrai-faux1-img.PNG" alt="image" id="vrai_faux1_img" style="display:none">
+<img src="classification phylo/questions/images/vrai-faux2-img.PNG" alt="image" id="vrai_faux2_img" style="display:none">
+<img src="classification phylo/questions/images/construit-img.PNG" alt="image" id="construit_img" style="display:none">
+
+
+  <div id="input1" class="inputEventNew" >
+     <label class="field field_v2">
+    <input class="field__input" id="input_class" autocomplete="off" placeholder="ex: class_test">
+      <i id = "class_check" class="fas fa-check"></i> <i id= "class_wrong" class="fas fa-times"></i>
+    <span class="field__label-wrap">
+      <span class="field__label" id="span_champ_class">Entrez votre classe</span>
+    </span>
+  </label>      
+  </div>
+  <div class="clickEvent">
+    <button class="button" id="btn_class"  >Appuyez ici pour valider !</button>
+  </div>  
+<br>
+<div id="input2" class="inputEventNew">
+     <label class="field field_v2">
+    <input class="field__input" id="input_id" autocomplete="off" placeholder="ex: 23">
+        <i id = "Id_check" class="fas fa-check"></i> <i id= "Id_wrong" class="fas fa-times"></i>
+    <span class="field__label-wrap">
+      <span class="field__label" id ="span_champ_id">Entrez votre Id</span>
+    </span>
+  </label>      
+  </div>
+  <div class="clickEvent">
+    <button class="button" id="btn_id"  >Appuyez ici pour valider !</button>
+  </div>
+  </div>
+  </div>
+  
+    <script id= "script_debut" src= "classification phylo/questions/debut.js"></script>
+    <script id="script_referrence" src="classification phylo/questions/reference.js"></script>
+    <script id="script_observe_forme" src="classification phylo/questions/observe-formes.js"></script>
+    <script id="script_observe_animaux" src="classification phylo/questions/observe-animaux.js"></script>
+    <script id="script_propositions" src="classification phylo/questions/propositions.js"></script>
+    <script id="script_photographie" src="classification phylo/questions/photographie.js"></script>
+    <script id="script_fruits" src="classification phylo/questions/fruits.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/descriptif.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/trier-vivant.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/coche8.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/arbre.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/arbre.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/caractere.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/attributs.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/pattes.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/vrai-faux-template.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/construit.js"></script>
+    <script id="script_descriptif" src="classification phylo/questions/graph-student.js"></script>
+</body>
+</html>

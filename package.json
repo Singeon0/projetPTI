@@ -1,0 +1,28 @@
+{
+  "name": "connect-the-dots",
+  "version": "1.0.0",
+  "description": "question connect the dots pour enquete pedagogique",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "connect",
+    "the",
+    "dots",
+    "enquete"
+  ],
+  "author": "Delaigle Matteo",
+  "license": "MIT",
+  "dependencies": {
+    "cross-spawn": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.18.1",
+    "node-fetch": "^2.6.7",
+    "nodemon": "^2.0.19",
+    "sqlite3": "^5.0.9",
+    "sweetalert": "^2.1.2",
+    "xlsx": "^0.17.5"
+  },
+  "devDependencies": {}
+}

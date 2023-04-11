@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Choix de l'interface</title>
+    <script>
+      function ouvrirEtudiant() {
+        location.replace("etudiant.html");
+      }
+    </script>
+    <style>
+      body {
+        background: linear-gradient(to bottom right, #003399, #0099cc);
+        font-family: "Roboto", sans-serif;
+        color: #fff;
+      }
+      h1 {
+        text-align: center;
+        font-size: 3rem;
+        margin-top: 50px;
+        text-shadow: 2px 2px 4px #000000;
+      }
+      button {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: "Roboto", sans-serif;
+        font-size: 1.5rem;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Choix de l'interface</h1>
+    <div style="text-align: center">
+      <button type="button" name="Professeur">Professeur</button>
+      <button type="button" name="Elève" onclick="ouvrirEtudiant()">
+        Elève
+      </button>
+      <button type="button" name="Admin">Admin</button>
+    </div>
+  </body>
+</html>

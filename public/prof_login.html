@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page de login</title>
+  <link rel="stylesheet" href="style2.css">
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    input {
+      margin: 10px;
+    }
+    button {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Se connecter</h1>
+  <form id="login-form">
+    <label for="id">ID:</label>
+    <input type="text" id="id" name="id" required>
+    <label for="password">Mot de passe:</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Se connecter</button>
+  </form>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const id = document.getElementById('id').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/api/check_credentials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id, password })
+      });
+
+      if (response.ok) {
+        window.location.href = 'prof.html';
+      } else {
+        alert('Identifiant ou mot de passe incorrect');
+      }
+    });
+  </script>
+</body>
+</html>

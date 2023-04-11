@@ -21,7 +21,6 @@ app.use(express.static('public'));
 app.use(express.json({ limit: '20mb' }));
 
 
-
 const timerCheckGoogleSheet = 300000;
 //------------Outils de développement------------------------------------------------------------------------------------
 //outilsDeDeveloppement()
@@ -36,6 +35,20 @@ function outilsDeDeveloppement() {
     position: false,
     version: 2
   }
+  let db2 = new sqlite3.Database(databaseName, err =>{
+    if(err)
+        throw err;
+       db.run("DROP TABLE utilisateurs ")
+        db.run("DROP TABLE role ")
+        db.run("CREATE TABLE roles (Id INTEGER PRIMARY KEY AUTOINCREMENT, nom varchar(50) NOT NULL)")
+          db.run("CREATE TABLE utilisateurs (Id INTEGER PRIMARY KEY AUTOINCREMENT, nom varchar(50) NOT NULL,prenom varchar(50) NOT NULL,nombreQuestionnaire INTEGER, role varchar(50) NOT NULL,FOREIGN KEY(role) REFERENCES roles(Id))")
+  
+          db.run("CREATE TABLE questionnaires (Id INTEGER PRIMARY KEY AUTOINCREMENT, nom varchar(150) NOT NULL,Id_utilisateurs INTEGER, fileName varchar(150) NOT NULL,FOREIGN KEY(Id_utilisateurs) REFERENCES utilisateurs(Id))")
+          db.close()
+      console.log("database sur "+databaseName);
+        });
+  
+  
   let db = new sqlite3.Database(databaseName, err =>{
     if(err)
         throw err;

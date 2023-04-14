@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choix des questions</title>
+  <link rel="stylesheet" href="style2.css">
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+    }
+    .container {
+      display: flex;
+      align-items: center;
+    }
+    .checkbox-container {
+      flex-basis: 10%;
+      text-align: center;
+    }
+    .text-container {
+      flex-basis: 70%;
+      background-color: #4caf50;
+      padding: 10px;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .button-container {
+      flex-basis: 20%;
+      text-align: center;
+    }
+    input[type="checkbox"] {
+      transform: scale(1.5);
+    }
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: "Roboto", sans-serif;
+      font-size: 1.2rem;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <h1>Choix des questions</h1>
+  <div class="container">
+    <div class="checkbox-container">
+      <input type="checkbox" id="hachure" name="hachure">
+    </div>
+    <div class="text-container">
+      <label for="hachure">Hachûre</label>
+    </div>
+    <div class="button-container">
+      <button>Modifier</button>
+    </div>
+  </div>
+</body>
+</html>

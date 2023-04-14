@@ -24,7 +24,6 @@
     "sweetalert": "^2.1.2",
     "xlsx": "^0.17.5"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Singeon0/projetPTI.git"

@@ -99,6 +99,34 @@ function outilsDeDeveloppement() {
   console.log("outil effectué");
 }
 
+// requetes sur les profs pour afficher les questionnaires dans profs.html
+// Ajoutez cette route à votre fichier index.js
+app.get('/api/questionnaires/:idProf', (req, res) => {
+  const idProf = req.params.idProf;
+  const db = new sqlite3.Database(databaseName);
+
+  const query = `
+    SELECT q.nom_questionnaire, q.date_creation
+    FROM questionnaire AS q
+    INNER JOIN utilisateur AS u ON q.id_utilisateur = u.id
+    WHERE u.id = ?;
+  `;
+
+  db.all(query, [idProf], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la récupération des questionnaires");
+    } else {
+      res.json(rows);
+    }
+  });
+
+  db.close();
+});
+
+
+
+
 //------------Gestion des points de l'élève------------------------------------------------------------------------------------
 
 

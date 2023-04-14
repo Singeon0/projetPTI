@@ -6,25 +6,42 @@
   <title>Liste des questionnaires créés</title>
   <link rel="stylesheet" href="style2.css">
   <style>
-    .button-container {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .questionnaire-btn {
-      width: 75%;
-    }
-
-    .modifier-btn {
-      width: 25%;
+    .questionnaire-item {
+      margin-bottom: 20px;
     }
   </style>
+  <script>
+    function loadQuestionnaires() {
+      const idProf = document.getElementById("idProf").value;
+      fetch(`/api/questionnaires/${idProf}`)
+        .then(response => response.json())
+        .then(data => {
+          const questionnairesContainer = document.getElementById("questionnairesContainer");
+          questionnairesContainer.innerHTML = ""; // Effacer les éléments précédents
+
+          data.forEach(questionnaire => {
+            const div = document.createElement("div");
+            div.classList.add("questionnaire-item");
+
+            const title = document.createElement("h2");
+            title.textContent = questionnaire.nom_questionnaire;
+
+            const date = document.createElement("p");
+            date.textContent = `Date de création : ${questionnaire.date_creation}`;
+
+            div.appendChild(title);
+            div.appendChild(date);
+            questionnairesContainer.appendChild(div);
+          });
+        });
+    }
+  </script>
 </head>
 <body>
   <h1>Liste des questionnaires créés</h1>
-  <div class="button-container">
-    <button class="questionnaire-btn">Questionnaire 1</button>
-    <button class="modifier-btn">Modifier</button>
-  </div>
+  <label for="id">ID prof:</label> <!-- id du prof dont on veut afficher la liste des questionnaire -->
+  <input type="text" id="idProf" name="idProf" required>
+  <button type="button" onclick="loadQuestionnaires()">Charger les questionnaires</button>
+  <div id="questionnairesContainer"></div>
 </body>
 </html>

@@ -128,8 +128,33 @@ app.get('/api/questionnaires/:idProf', (req, res) => {
 
 
 //------------Gestion des points de l'élève------------------------------------------------------------------------------------
-
-
+app.post('/credentials', (request, response) => {
+  let id = request.body.id;
+  let password = request.body.password;
+  let db = new sqlite3.Database(databaseName, err =>{
+   
+  db.all("SELECT * FROM utilisateurs WHERE Id = " + parseInt(id), (err, data)=>{
+      console.log(data);
+      if (data.length != 0){
+        console.log(data[0].password)
+        console.log(password)
+      if(data[0].password == password){
+        console.log("bon")
+        response.json({
+          status: 'success',
+        });
+        return;
+      }
+      }
+      response.json({
+        status: 'failure',
+      });
+      
+    });
+  })
+  
+console.log(response)
+});
 // partie api pour les points 
 var quest_pos_excel = [];
 app.post('/api', (request, response) => {

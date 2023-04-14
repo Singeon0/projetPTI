@@ -38,16 +38,16 @@
       const id = document.getElementById('id').value;
       const password = document.getElementById('password').value;
 
-      const response = await fetch('/api/check_credentials', {
+      const response = await fetch('/credentials', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id, password })
       });
-
-      if (response.ok) {
-        window.location.href = 'prof.html';
+      console.log(response.statut)
+      if (response.statut == 'success') {
+       
       } else {
         alert('Identifiant ou mot de passe incorrect');
       }

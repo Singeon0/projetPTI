@@ -18,16 +18,16 @@
         .then(data => {
           const questionnairesContainer = document.getElementById("questionnairesContainer");
           questionnairesContainer.innerHTML = ""; // Effacer les éléments précédents
-
+          console.log(data)
           data.forEach(questionnaire => {
             const div = document.createElement("div");
             div.classList.add("questionnaire-item");
 
             const title = document.createElement("h2");
-            title.textContent = questionnaire.nom_questionnaire;
+            title.textContent = `Nom :  ${questionnaire.nom}`;
 
             const date = document.createElement("p");
-            date.textContent = `Date de création : ${questionnaire.date_creation}`;
+            date.textContent = `File name : ${questionnaire.fileName}`;
 
             div.appendChild(title);
             div.appendChild(date);

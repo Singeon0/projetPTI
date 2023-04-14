@@ -9,13 +9,13 @@ const sqlite3 = require('sqlite3').verbose();
 
 var statut_response = false;
 const app = express();
-const port = process.env.PORT || 3100;
+const port = process.env.PORT || 5500;
 
 //variables globales
 const databaseName = 'main.db';
 const nombreDeTest = 3;
 //connection to localhost at port 3100
-app.listen(port, () => console.log('listening at 3100'));
+app.listen(port, () => console.log('listening at ' + port));
 // localhost use the 'public' repertory 
 app.use(express.static('public'));
 app.use(express.json({ limit: '20mb' }));
@@ -35,6 +35,13 @@ function outilsDeDeveloppement() {
     position: false,
     version: 2
   }
+  let db3 = new sqlite3.Database(databaseName, err =>{
+    db.run("INSERT INTO questionnaires (Id, nom, Id_utilisateurs, fileName) VALUES (1,'test',1,'testfile')");
+    db.run("INSERT INTO questionnaires (Id, nom, Id_utilisateurs, fileName) VALUES (2,'test2',1,'testfile2')");
+    db.run("INSERT INTO questionnaires (Id, nom, Id_utilisateurs, fileName) VALUES (3,'test3',2,'testfile3')");
+    db.run("INSERT INTO questionnaires (Id, nom, Id_utilisateurs, fileName) VALUES (4,'test4',2,'testfile4')");
+  
+  });
   let db2 = new sqlite3.Database(databaseName, err =>{
     if(err)
         throw err;
@@ -106,10 +113,10 @@ app.get('/api/questionnaires/:idProf', (req, res) => {
   const db = new sqlite3.Database(databaseName);
 
   const query = `
-    SELECT q.nom_questionnaire, q.date_creation
-    FROM questionnaire AS q
-    INNER JOIN utilisateur AS u ON q.id_utilisateur = u.id
-    WHERE u.id = ?;
+    SELECT q.nom, q.fileName
+    FROM questionnaires AS q
+    INNER JOIN utilisateurs AS u ON q.Id_utilisateurs = u.Id
+    WHERE u.Id = ?;
   `;
 
   db.all(query, [idProf], (err, rows) => {

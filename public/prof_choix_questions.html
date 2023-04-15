@@ -50,13 +50,23 @@
     }
     .save-button {
       display: block;
-      width: 100%;
+      margin: 20px auto 0;
+      width: 50%;
       background-color: red;
       font-size: 2rem;
-      margin-top: 20px;
       padding: 20px;
     }
   </style>
+  <script>
+    // Récupère l'URL de la page courante
+    var url = new URL(window.location.href);
+
+    // Récupère la valeur de la variable idProf de l'URL
+    var idProf = url.searchParams.get("idProf");
+
+    // Affiche la valeur de la variable idProf dans la console
+    console.log("La valeur de la variable idProf est : " + idProf);
+  </script>
 </head>
 <body>
   <h1>Choix des questions</h1>

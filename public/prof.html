@@ -9,6 +9,15 @@
     .questionnaire-item {
       margin-bottom: 20px;
     }
+    .save-button {
+      display: block;
+      margin: 20px auto 0;
+      width: 50%;
+      background-color: red;
+      font-size: 2rem;
+      padding: 20px;
+    }
+
   </style>
   <script>
     function loadQuestionnaires() {
@@ -35,6 +44,10 @@
           });
         });
     }
+    function openPage() {
+      const idProf = document.getElementById("idProf").value;    
+      window.location.href = "prof_choix_questions.html?idProf=" + idProf;
+  }
   </script>
 </head>
 <body>
@@ -43,5 +56,6 @@
   <input type="text" id="idProf" name="idProf" required>
   <button type="button" onclick="loadQuestionnaires()">Charger les questionnaires</button>
   <div id="questionnairesContainer"></div>
+  <button class="save-button" onclick="openPage()">Créer questionnaire</button> <!-- AJOUTER QUE SI PAS D'ID RENSEIGNÉ LA PAGE NE PEUT PAS S'OUVRIR -->
 </body>
 </html>

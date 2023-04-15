@@ -2210,3 +2210,4 @@ node_modules/xlsx/xlsx.js
 node_modules/xlsx/xlsx.mini.js
 node_modules/xlsx/xlsx.mjs
 node_modules/xlsx/xlsxworker.js
+.vscode/settings.json

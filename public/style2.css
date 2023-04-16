@@ -1,7 +1,9 @@
-body {
-  background: linear-gradient(to bottom right, #003399, #0099cc);
+html {
+  background: rgb(63,94,251);
+  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
   font-family: "Roboto", sans-serif;
   color: #fff;
+
 }
 h1 {
   text-align: center;
@@ -23,4 +25,13 @@ button {
 }
 button:hover {
   background-color: #3e8e41;
+}
+
+.save-button {
+  display: block;
+  margin: 20px auto 0;
+  width: 50%;
+  background-color: red;
+  font-size: 2rem;
+  padding: 20px;
 }

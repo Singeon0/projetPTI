@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test diagnostique</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="https://cdn.glitch.com/52b0fe76-8eb9-492e-bc3c-2511b85d3002%2Fsurvey-2316468_960_720.png?v=1626133345559">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
+  <script src="https://kit.fontawesome.com/cec7e13ade.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Andika">
+    <link rel="stylesheet" href="questions/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body id="body">
+
+<h1 id = "titre_questionnaire">Test sur les fractions</h1>
+
+  <div id= "background">
+    <img src="signe moins/questions/images/icon-professor3.png" alt="image" id="icon_professor" title="partie professeur (pour créer une classe)">
+      <div id="margin" ></div>
+  <div id="espace"  ></div>
+        <i id= "next_arrow" class="fas fa-angle-double-right" onclick="score_connect_the_dots()"></i>
+ <div id="canvas" >  
+ </div>
+
+  <div id= "question_id" class= "question">
+    
+    
+<a href="/download" id="download"style="display:none">Appuyez ici pour download ! </a>
+<i class="fas fa-file-download" id="icon_download"></i>
+<a href="https://forms.office.com/r/dhNmMFtA4w" id="forms_prof" style='display:none'>Appuyez ici pour créer une classe ! </a>
+    
+<label id="greetings">Bienvenue à ce test diagnostique sur les fractions</label>    
+<img src="questions/images/hachure1-img.PNG" alt="image" id="hachure1_img" style="display:none">
+<img src="questions/images/entoure-addition-img.PNG" alt="image" id="entoure_addition_img" style="display:none">
+<img src="questions/images/droite-grad-img.PNG" alt="image" id="droite_grad_img" style="display:none">
+<img src="questions/images/trouver-fraction-img.PNG" alt="image" id="trouver_fraction_img" style="display:none">
+<img src="questions/images/dessin-distraction-img.PNG" alt="image" id="dessin_distraction_img" style="display:none">
+<img src="questions/images/irreductible-img.PNG" alt="image" id="irreductible_img" style="display:none">
+<img src="questions/images/representations-img.PNG" alt="image" id="representations_img" style="display:none">
+<img src="questions/images/resous-simplifie-img.PNG" alt="image" id="resous_simplifie_img" style="display:none">
+<img src="questions/images/droite-grad2-img.PNG" alt="image" id="droite_grad2_img" style="display:none">
+<img src="questions/images/droite-distraction-img.PNG" alt="image" id="droite_distraction_img" style="display:none">
+<img src="questions/images/reglette-img.PNG" alt="image" id="reglette_img" style="display:none">
+<img src="questions/images/traduis-img.PNG" alt="image" id="traduis_img" style="display:none">
+<img src="questions/images/hachure2-img.PNG" alt="image" id="hachure2_img" style="display:none">
+<img src="questions/images/colorie-etoiles-img.PNG" alt="image" id="colorie_etoiles_img" style="display:none">
+<img src="questions/images/entoure-template1-img.PNG" alt="image" id="entoure_template1_img" style="display:none">
+<img src="questions/images/entoure-template2-img.PNG" alt="image" id="entoure_template2_img" style="display:none">
+<img src="questions/images/entoure-template4-img.PNG" alt="image" id="entoure_template4_img" style="display:none">
+<img src="questions/images/entoure-distraction-img.PNG" alt="image" id="entoure_distraction_img" style="display:none">
+<img src="questions/images/resous21-img.PNG" alt="image" id="resous21_img" style="display:none">
+<img src="questions/images/symbole-img.PNG" alt="image" id="symbole_img" style="display:none">
+<img src="questions/images/soustraction-distraction-img.PNG" alt="image" id="soustraction_distraction_img" style="display:none">
+<img src="questions/images/traduction-probleme2-img.PNG" alt="image" id="traduction_probleme2_img" style="display:none">
+<img src="questions/images/resous25-img.PNG" alt="image" id="resous25_img" style="display:none">
+<img src="questions/images/consignes-connect-img.PNG" alt="image" id="consignes_connect_img" style="display:none">
+<img src="questions/images/consigne-connect1-img.PNG" alt="image" id="consignes_connect1_img" style="display:none">
+<img src="questions/images/latte-hachure-img2.PNG" alt="image" id="latte_hachure_img" style="display:none">
+
+
+  <div id="input1" class="inputEventNew" >
+     <label class="field field_v2">
+    <input class="field__input" id="input_class" autocomplete="off" placeholder="ex: class_test">
+      <i id = "class_check" class="fas fa-check"></i> <i id= "class_wrong" class="fas fa-times"></i>
+    <span class="field__label-wrap">
+      <span class="field__label" id="span_champ_class">Entrez votre classe</span>
+    </span>
+  </label>      
+  </div>
+  <div class="clickEvent">
+    <button class="button" id="btn_class"  >Appuyez ici pour valider !</button>
+  </div>  
+<br>
+<div id="input2" class="inputEventNew">
+     <label class="field field_v2">
+    <input class="field__input" id="input_id" autocomplete="off" placeholder="ex: 23">
+        <i id = "Id_check" class="fas fa-check"></i> <i id= "Id_wrong" class="fas fa-times"></i>
+    <span class="field__label-wrap">
+      <span class="field__label" id ="span_champ_id">Entrez votre Id</span>
+    </span>
+  </label>      
+  </div>
+  <div class="clickEvent">
+    <button class="button" id="btn_id"  >Appuyez ici pour valider !</button>
+  </div>
+  </div>
+  </div>
+  <script>console.log(navigator.userAgent);
+    if(navigator.userAgent == "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 3.5.30729; Tablet PC 2.0; McAfee; Zoom 3.6.0; rv:11.0) like Gecko"){
+      swal("Ce site web ne fonctionne pas sur internet explorer. Veuillez changer de navigateur et utiliser Chrome/Firefox/Edge");
+    }else{
+  swal("Consignes : ", "Entre le code classe que ton professeur t'a donné dans le champ ''classe'' et ton Id, également attribué par ton professeur, dans le champ Id ");
+    }</script>
+  <script src='questions/debut.js'></script>
+  <script src='questions/reference.js'></script>
+ <script src="questions/hachure1.js" ></script>
+ <script src="questions/relier.js" ></script>
+ <script src="questions/entoure_addition.js" ></script>
+ <script src="questions/droite-grad.js" ></script>
+ <script src="questions/trouver-fraction.js" ></script>
+ <script src="questions/dessin-distraction.js" ></script>
+ <script src="questions/irreductible.js" ></script>
+ <script src="questions/representations.js" ></script>
+ <script src="questions/resous-simplifie.js" ></script>
+ <script src="questions/droite-distraction.js" ></script>
+ <script src="questions/reglette.js" ></script>
+ <script src="questions/traduction-probleme.js" ></script>
+ <script src="questions/hachure2.js" ></script>
+ <script src="questions/colorie-etoiles.js" ></script>
+ <script src="questions/connect-multiple.js" ></script>
+ <script src="questions/entoure-template.js" ></script>
+ <script src="questions/entoure-distraction.js" ></script>
+ <script src="questions/symbole.js" ></script>
+ <script src="questions/soustraction-distraction.js" ></script>
+ <script src="questions/traduction-probleme2.js" ></script>
+ <script src="questions/graph-student.js" ></script>  
+</body>
+</html>

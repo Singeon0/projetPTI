@@ -1,0 +1,58 @@
+html {
+  background: rgb(63,94,251);
+  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+  font-family: "Roboto", sans-serif;
+  color: #fff;
+
+}
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin-top: 50px;
+  text-shadow: 2px 2px 4px #000000;
+}
+button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+button:hover {
+  background-color: #3e8e41;
+}
+
+.save-button {
+  display: block;
+  margin: 20px auto 0;
+  width: 50%;
+  background-color: red;
+  font-size: 2rem;
+  padding: 20px;
+}
+
+/* Ajoutez ceci dans votre fichier style_prof.css */
+.proposition-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.proposition {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.gauche {
+  order: 1;
+}
+
+.droite {
+  order: 2;
+}

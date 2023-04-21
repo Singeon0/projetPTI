@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Liste des questionnaires créés</title>
-  <link rel="stylesheet" href="style2.css">
+  <link rel="stylesheet" href="style_prof.css">
   <style>
     .questionnaire-item {
       margin-bottom: 20px;
@@ -28,10 +28,14 @@
             title.textContent = `Nom :  ${questionnaire.nom}`;
 
             const date = document.createElement("p");
-            date.textContent = `File name : ${questionnaire.fileName}`;
+            date.textContent = `Détails du questionnaire : ${questionnaire.details_questionnaire}`;
+
+            const id_class = document.createElement("p");
+            id_class.textContent = `ID du questionnaire : ${questionnaire.Id}`;
 
             div.appendChild(title);
             div.appendChild(date);
+            div.appendChild(id_class);
             questionnairesContainer.appendChild(div);
           });
         });

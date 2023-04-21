@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer une question</title>
+    <link rel="stylesheet" href="style_prof.css">
+</head>
+<body>
+    <h1>Créer une question - Relier les bonnes propositions</h1>
+    <form id="create-question-form">
+        <label for="question-name">Nom de la question :</label>
+        <input type="text" id="question-name" required>
+        
+        <label for="num-propositions">Nombre de propositions :</label>
+        <input type="number" id="num-propositions" min="2" required>
+        
+        <div id="propositions-container"></div>
+        
+        <button type="submit">Créer la question</button>
+    </form>
+
+    <script src="create_question.js"></script>
+</body>
+</html>

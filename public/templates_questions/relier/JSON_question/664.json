@@ -1,15 +1,16 @@
 {
-  "titre_question": "TEST111",
+  "titre_question": "premier_mai",
   "propositions_gauche_ecran": [
     "France",
     "Belgique"
   ],
   "propositions_droite_ecran": [
     "Paris",
-    "Bruxelles"
+    ""
   ],
   "correspondances_correctes": {
     "France": "Paris",
-    "Belgique": "Bruxelles"
-  }
+    "Belgique": ""
+  },
+  "questionnaireName": "HAHAAAAAAA"
 }

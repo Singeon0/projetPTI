@@ -1,7 +1,6 @@
 html {
   background: rgb(63,94,251);
-  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
-  font-family: "Roboto", sans-serif;
+  font-family: "Arial", sans-serif;
   color: #fff;
 
 }
@@ -55,4 +54,12 @@ button:hover {
 
 .droite {
   order: 2;
+}
+
+/* Définir la bordure et le centrage du canvas */
+canvas {
+  border: 1px solid black;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 5px 5px 10px gray; /* Ajouter une ombre au canvas */
 }

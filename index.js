@@ -59,6 +59,23 @@ app.get('/api/questionnaires/:idProf', (req, res) => {
 
 
 //---------------------------------Gestion des questionnaires--------------------------------------------------------------
+
+// Gestion des id questionnaires : permet de créer un id sur base du nom du questionnaire
+function sumNumbers(numbers) {
+  return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+}
+
+
+function stringToNumbers(input) {
+  let result = [];
+  for (let i = 0; i < input.length; i++) {
+      result.push(input.charCodeAt(i));
+  }
+  return sumNumbers(result);
+}
+
+
+
 app.get("/api/types_de_questions", (req, res) => {
   const db = new sqlite3.Database(databaseName);
 
@@ -80,10 +97,10 @@ app.get("/api/types_de_questions", (req, res) => {
 app.post("/api/save_questionnaire", (req, res) => {
   const { idProf, nom, questions } = req.body;
   const db = new sqlite3.Database(databaseName);
-  const idQuestionnaire = Math.floor(Math.random() * (10 ** 6));
+  const idQuestionnaire = parseInt(stringToNumbers(nom), 10);
 
   const query = `
-    INSERT INTO questionnaires (Id, nom, Id_utilisateurs, fileName)
+    INSERT INTO questionnaires (Id, nom, Id_utilisateurs, details_questionnaire)
     VALUES (?, ?, ?, ?);
   `;
 
@@ -109,6 +126,8 @@ app.post("/api/save_questionnaire", (req, res) => {
       INSERT INTO questions (nom, id_questionnaire, numero_question, infos_question)
       VALUES (?, ?, ?, ?);
     `;
+    
+    
 
     db.run(query, [nom, idQuestionnaire, numero_question, null], (err) => {
       callback(err);
@@ -136,9 +155,9 @@ app.post("/api/save_questionnaire", (req, res) => {
 
 app.post("/api/save_question", (req, res) => {
   const questionJSON = req.body;
-  const questionId = Math.floor(Math.random() * (10 ** 6));
-  const fileName = `question_${questionId}.json`;
-  const filePath = path.join(__dirname, "public/templates_questions/JSON_question", fileName);
+  const questionId = stringToNumbers(questionJSON.questionnaireName);
+  const fileName = `${questionId}.json`;
+  const filePath = path.join(__dirname, "public/templates_questions/relier/JSON_question", fileName);
 
   fs.open(filePath, 'w', (err, file) => {
     if (err) {
@@ -174,3 +193,26 @@ app.get("/api/get_question/:id", (req, res) => {
   });
 });
 
+// créez une route pour gérer la requête POST et enregistrer le fichier JSON dans le dossier "JSON_question"
+app.post("/api/save_json", (req, res) => {
+  const questionJSON = req.body;
+  const questionId = Math.floor(Math.random() * (10 ** 6));
+  const fileName = `fichier_reponse_${questionId}.json`;
+  const filePath = path.join(__dirname, "public/templates_questions/relier/JSON_question", fileName);
+
+  fs.open(filePath, 'w', (err, file) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la création du fichier de question");
+    } else {
+      fs.writeFile(filePath, JSON.stringify(questionJSON, null, 2), (err) => {
+        if (err) {
+          console.error(err.message);
+          res.status(500).send("Erreur lors de la sauvegarde de la question");
+        } else {
+          res.status(200).send("Question sauvegardée");
+        }
+      });
+    }
+  });
+});

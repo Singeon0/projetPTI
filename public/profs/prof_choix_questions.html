@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,26 @@
   <link rel="stylesheet" href="style_prof.css">
   <script>
     let idProf;
-
+    let questionnaireNameValue;
     function parseIdProf() {
       const urlParams = new URLSearchParams(window.location.search);
       idProf = urlParams.get("idProf");
     }
+
+    function openPage() {
+      questionnaireNameValue = document.getElementById("questionnaireName").value;
+      window.location.href = "../templates_questions/relier/create_question.html?questionnaireName=" + questionnaireNameValue;
+    }
+
+    window.onload = function () {
+      var questionnaireName = document.getElementById("questionnaireName");
+      questionnaireName.addEventListener("input", function () {
+        // naviguer vers la page "create_prof.html"
+        var bouton = document.getElementById("relier");
+        bouton.setAttribute("onclick", "openPage()");
+      });
+    }
+
 
     function loadTypesDeQuestions() {
       fetch("/api/types_de_questions")
@@ -33,6 +49,18 @@
             button.textContent = "Personnaliser";
             button.style.width = "30%";
             button.classList.add("button");
+            // Ajouter un écouteur d'événement pour le clic sur le bouton
+            if (label.textContent === "Relier les bonnes propositions") {
+              // Si c'est le cas, ajouter l'attribut id "relier" au bouton
+              button.setAttribute("id", "relier");
+              button.setAttribute("onclick", "openPage()");
+            }
+
+
+            // Ajouter le bouton à la page
+            document.body.appendChild(button);
+
+
 
             div.appendChild(checkbox);
             div.appendChild(label);
@@ -61,37 +89,39 @@
         }
       });
       return selectedQuestions;
-}
-
-function saveQuestionnaire() {
-  const questionnaireName = document.getElementById("questionnaireName").value;
-  const selectedQuestions = getSelectedQuestions();
-  fetch("/api/save_questionnaire", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      idProf: idProf,
-      nom: questionnaireName,
-      questions: selectedQuestions
-    })
-  }).then(response => {
-    if (response.ok) {
-      alert("Questionnaire sauvegardé avec succès");
-    } else {
-      alert("Erreur lors de la sauvegarde du questionnaire");
     }
-  });
-}
+
+    function saveQuestionnaire() {
+      const questionnaireName = document.getElementById("questionnaireName").value;
+      const selectedQuestions = getSelectedQuestions();
+      fetch("/api/save_questionnaire", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          idProf: idProf,
+          nom: questionnaireName,
+          questions: selectedQuestions
+        })
+      }).then(response => {
+        if (response.ok) {
+          alert("Questionnaire sauvegardé avec succès");
+        } else {
+          alert("Erreur lors de la sauvegarde du questionnaire");
+        }
+      });
+    }
 
 
   </script>
 </head>
+
 <body>
   <h1>Création de questionnaire</h1>
   <input type="text" id="questionnaireName" placeholder="Nom du questionnaire" style="width: 100%; text-align: center;">
   <div id="questionsContainer"></div>
   <button class="save-button" onclick="saveQuestionnaire()">Sauvegarder le questionnaire</button>
 </body>
+
 </html>

@@ -1,3 +1,9 @@
+function parseQuestionnaireName() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const questionnaireName = urlParams.get("questionnaireName");
+  return questionnaireName;
+}
+
 document.getElementById("num-propositions").addEventListener("change", createPropositionsForm);
 document.getElementById("create-question-form").addEventListener("submit", createQuestionJSON);
 
@@ -46,6 +52,8 @@ function saveQuestionToServer(questionJSON) {
 function createQuestionJSON(event) {
   event.preventDefault();
   
+  const questionnaireName = parseQuestionnaireName();
+
   const questionName = document.getElementById("question-name").value;
   const numPropositions = document.getElementById("num-propositions").value;
   const propositionsLeft = [];
@@ -64,7 +72,8 @@ function createQuestionJSON(event) {
     titre_question: questionName,
     propositions_gauche_ecran: propositionsLeft,
     propositions_droite_ecran: propositionsRight,
-    correspondances_correctes: correctMatches
+    correspondances_correctes: correctMatches,
+    questionnaireName: questionnaireName
   };
 
   saveQuestionToServer(questionJSON);

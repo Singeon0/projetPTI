@@ -1,16 +1,16 @@
 {
-  "titre_question": "premier_mai",
+  "titre_question": "koba lad",
   "propositions_gauche_ecran": [
     "France",
     "Belgique"
   ],
   "propositions_droite_ecran": [
     "Paris",
-    ""
+    "Bruxelles"
   ],
   "correspondances_correctes": {
     "France": "Paris",
-    "Belgique": ""
+    "Belgique": "Bruxelles"
   },
-  "questionnaireName": "HAHAAAAAAA"
+  "questionnaireName": "c trop bon la vie d'artiste"
 }

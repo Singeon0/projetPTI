@@ -69,7 +69,7 @@ function sumNumbers(numbers) {
 function stringToNumbers(input) {
   let result = [];
   for (let i = 0; i < input.length; i++) {
-      result.push(input.charCodeAt(i));
+    result.push(input.charCodeAt(i));
   }
   return sumNumbers(result);
 }
@@ -126,10 +126,37 @@ app.post("/api/save_questionnaire", (req, res) => {
       INSERT INTO questions (nom, id_questionnaire, numero_question, infos_question)
       VALUES (?, ?, ?, ?);
     `;
-    
-    
 
-    db.run(query, [nom, idQuestionnaire, numero_question, null], (err) => {
+    var details_js = null;
+    console.log("ICICICICICCICI");
+
+    if (question.nom == "Relier les bonnes propositions") {
+
+      console.log(req.body.nom + "relier");
+      const pathJS = req.body.nom + "relier";
+      const filePath = "public/templates_questions/relier/JSON_question/" + stringToNumbers(pathJS) + ".json";
+
+      console.log(filePath);
+
+      fs.readFile(filePath, 'utf8', (err, jsonString) => {
+        if (err) {
+          console.error('Erreur lors de la lecture du fichier:', err);
+          return;
+        }
+        try {
+          details_js = JSON.parse(jsonString);
+          console.log(details_js);
+          // Utilisez la variable 'details_js' ici pour effectuer des opérations avec les données JSON
+        } catch (error) {
+          console.error('Erreur lors de la conversion du JSON en objet:', error);
+        }
+      });
+
+    }
+
+    console.log(details_js);
+
+    db.run(query, [nom, idQuestionnaire, numero_question, JSON.stringify(details_js, null, 2)], (err) => {
       callback(err);
     });
   }
@@ -155,7 +182,9 @@ app.post("/api/save_questionnaire", (req, res) => {
 
 app.post("/api/save_question", (req, res) => {
   const questionJSON = req.body;
-  const questionId = stringToNumbers(questionJSON.questionnaireName);
+  const questionId = stringToNumbers(questionJSON.questionnaireName + "relier"); // afin de différencier l'id de la question relier des autres questions
+  console.log(questionJSON.questionnaireName + "relier");
+  console.log(questionId);
   const fileName = `${questionId}.json`;
   const filePath = path.join(__dirname, "public/templates_questions/relier/JSON_question", fileName);
 

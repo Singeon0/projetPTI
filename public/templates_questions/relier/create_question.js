@@ -1,7 +1,14 @@
+let questionnaireName;
+
 function parseQuestionnaireName() {
   const urlParams = new URLSearchParams(window.location.search);
-  const questionnaireName = urlParams.get("questionnaireName");
+  questionnaireName = urlParams.get("questionnaireName");
+  console.log(questionnaireName)
   return questionnaireName;
+}
+
+window.onload = function () {
+  questionnaireName = parseQuestionnaireName();
 }
 
 document.getElementById("num-propositions").addEventListener("change", createPropositionsForm);

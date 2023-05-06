@@ -1,0 +1,16 @@
+{
+  "titre_question": "premier_maissss",
+  "propositions_gauche_ecran": [
+    "France",
+    "Belgique"
+  ],
+  "propositions_droite_ecran": [
+    "Paris",
+    "Bruxelles"
+  ],
+  "correspondances_correctes": {
+    "France": "Paris",
+    "Belgique": "Bruxelles"
+  },
+  "questionnaireName": "bang bang"
+}

@@ -97,7 +97,6 @@ app.get("/api/types_de_questions", (req, res) => {
 app.post("/api/save_questionnaire", (req, res) => {
   const { idProf, nom, questions } = req.body;
   const db = new sqlite3.Database(databaseName);
-  const idQuestionnaire = parseInt(stringToNumbers(nom), 10);
 
   const query = `
     INSERT INTO questionnaires (Id, nom, Id_utilisateurs, details_questionnaire)
@@ -127,7 +126,7 @@ app.post("/api/save_questionnaire", (req, res) => {
       VALUES (?, ?, ?, ?);
     `;
 
-    var details_js = null;
+    var details_js;
     console.log("ICICICICICCICI");
 
     if (question.nom == "Relier les bonnes propositions") {
@@ -136,8 +135,6 @@ app.post("/api/save_questionnaire", (req, res) => {
       const pathJS = req.body.nom + "relier";
       const filePath = "public/templates_questions/relier/JSON_question/" + stringToNumbers(pathJS) + ".json";
 
-      console.log(filePath);
-
       fs.readFile(filePath, 'utf8', (err, jsonString) => {
         if (err) {
           console.error('Erreur lors de la lecture du fichier:', err);
@@ -145,7 +142,6 @@ app.post("/api/save_questionnaire", (req, res) => {
         }
         try {
           details_js = JSON.parse(jsonString);
-          console.log(details_js);
           // Utilisez la variable 'details_js' ici pour effectuer des opérations avec les données JSON
         } catch (error) {
           console.error('Erreur lors de la conversion du JSON en objet:', error);
@@ -156,7 +152,7 @@ app.post("/api/save_questionnaire", (req, res) => {
 
     console.log(details_js);
 
-    db.run(query, [nom, idQuestionnaire, numero_question, JSON.stringify(details_js, null, 2)], (err) => {
+    db.run(query, [nom, idQuestionnaire, numero_question, details_js], (err) => {
       callback(err);
     });
   }

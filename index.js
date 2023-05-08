@@ -241,3 +241,53 @@ app.post("/api/save_json", (req, res) => {
     }
   });
 });
+
+
+//__________________________________________Partie étudiant_____________________________
+app.get('/api/get_questionnaire_id', (req, res) => {
+  const name = req.query.name;
+  const db = new sqlite3.Database(databaseName);
+
+  const query = `
+    SELECT Id
+    FROM questionnaires
+    WHERE nom = ?;
+  `;
+
+  db.get(query, [name], (err, row) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la récupération de l'ID du questionnaire");
+    } else {
+      if (row) {
+        res.json({ questionnaire_id: row.Id });
+      } else {
+        res.status(404).send("Aucun questionnaire trouvé avec ce nom.");
+      }
+    }
+  });
+
+  db.close();
+});
+
+app.get('/api/get_questions', (req, res) => {
+  const id = req.query.id;
+  const db = new sqlite3.Database(databaseName);
+
+  const query = `
+    SELECT nom, infos_question
+    FROM questions
+    WHERE id_questionnaire = ?;
+  `;
+
+  db.all(query, [id], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la récupération des questions");
+    } else {
+      res.json({ questions: rows });
+    }
+  });
+
+  db.close();
+});

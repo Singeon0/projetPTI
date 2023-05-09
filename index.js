@@ -97,6 +97,7 @@ app.get("/api/types_de_questions", (req, res) => {
 app.post("/api/save_questionnaire", (req, res) => {
   const { idProf, nom, questions } = req.body;
   const db = new sqlite3.Database(databaseName);
+  const idQuestionnaire = parseInt(stringToNumbers(nom), 10);
 
   const query = `
     INSERT INTO questionnaires (Id, nom, Id_utilisateurs, details_questionnaire)
@@ -127,7 +128,6 @@ app.post("/api/save_questionnaire", (req, res) => {
     `;
 
     var details_js;
-    console.log("ICICICICICCICI");
 
     if (question.nom == "Relier les bonnes propositions") {
 
@@ -152,7 +152,7 @@ app.post("/api/save_questionnaire", (req, res) => {
 
     console.log(details_js);
 
-    db.run(query, [nom, idQuestionnaire, numero_question, details_js], (err) => {
+    db.run(query, [details_js.questionnaireName, idQuestionnaire, numero_question, details_js], (err) => {
       callback(err);
     });
   }

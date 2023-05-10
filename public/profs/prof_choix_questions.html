@@ -14,17 +14,26 @@
       idProf = urlParams.get("idProf");
     }
 
-    function openPage() {
+    function openPage(typeQuestion) {
       questionnaireNameValue = document.getElementById("questionnaireName").value;
-      window.location.href = "../templates_questions/relier/create_question.html?questionnaireName=" + questionnaireNameValue;
+      if (typeQuestion == 'relier') {
+        window.location.href = "../templates_questions/relier/create_question.html?questionnaireName=" + questionnaireNameValue;
+      }
+      else if (typeQuestion == "hachure") {
+        window.location.href = "../templates_questions/hachure/create_question.html?questionnaireName=" + questionnaireNameValue;
+      }
     }
 
     window.onload = function () {
       var questionnaireName = document.getElementById("questionnaireName");
       questionnaireName.addEventListener("input", function () {
         // naviguer vers la page "create_prof.html"
+
         var bouton = document.getElementById("relier");
-        bouton.setAttribute("onclick", "openPage()");
+        bouton.setAttribute("onclick", "openPage('relier')");
+
+        var bouton2 = document.getElementById("hachure");
+        bouton2.setAttribute("onclick", "openPage()");
       });
     }
 
@@ -56,11 +65,15 @@
               button.setAttribute("onclick", "openPage()");
             }
 
+            // Ajouter un écouteur d'événement pour le clic sur le bouton
+            if (label.textContent === "Hâchure fractions") {
+              // Si c'est le cas, ajouter l'attribut id "relier" au bouton
+              button.setAttribute("id", "hachure");
+              button.setAttribute("onclick", "openPage()");
+            }
 
             // Ajouter le bouton à la page
             document.body.appendChild(button);
-
-
 
             div.appendChild(checkbox);
             div.appendChild(label);

@@ -91,6 +91,7 @@
             const propositionsLeft = [];
             const propositionsRight = [];
             const correctMatches = {};
+            const questionnaireType = "relier";
 
             for (let i = 1; i <= numPropositions; i++) {
                 const propLeft = document.getElementById(`proposition-left-${i}`).value;
@@ -105,7 +106,8 @@
                 propositions_gauche_ecran: propositionsLeft,
                 propositions_droite_ecran: propositionsRight,
                 correspondances_correctes: correctMatches,
-                questionnaireName: questionnaireName
+                questionnaireName: questionnaireName,
+                questionnaireType: questionnaireType
             };
 
             saveQuestionToServer(questionJSON);

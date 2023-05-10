@@ -19,8 +19,9 @@
       if (typeQuestion == 'relier') {
         window.location.href = "../templates_questions/relier/create_question.html?questionnaireName=" + questionnaireNameValue;
       }
-      else if (typeQuestion == "hachure") {
-        window.location.href = "../templates_questions/hachure/create_question.html?questionnaireName=" + questionnaireNameValue;
+      else if (typeQuestion == "hacher") {
+        console.log('hiaaaaa')
+        window.location.href = "../templates_questions/hacher/create_question.html?questionnaireName=" + questionnaireNameValue;
       }
     }
 
@@ -32,8 +33,8 @@
         var bouton = document.getElementById("relier");
         bouton.setAttribute("onclick", "openPage('relier')");
 
-        var bouton2 = document.getElementById("hachure");
-        bouton2.setAttribute("onclick", "openPage()");
+        var bouton2 = document.getElementById("hacher");
+        bouton2.setAttribute("onclick", "openPage('hacher')");
       });
     }
 
@@ -68,7 +69,7 @@
             // Ajouter un écouteur d'événement pour le clic sur le bouton
             if (label.textContent === "Hâchure fractions") {
               // Si c'est le cas, ajouter l'attribut id "relier" au bouton
-              button.setAttribute("id", "hachure");
+              button.setAttribute("id", "hacher");
               button.setAttribute("onclick", "openPage()");
             }
 

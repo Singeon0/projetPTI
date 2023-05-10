@@ -200,7 +200,7 @@ function isJSON(str) {  // vérifier que qu'une variable est au format JSON
 
 app.post("/api/save_question", (req, res) => {
   const questionJSON = req.body;
-  const questionId = stringToNumbers(questionJSON.questionnaireName + "relier"); // afin de différencier l'id de la question relier des autres questions
+  const questionId = stringToNumbers(questionJSON.questionnaireName +questionJSON.questionnaireType); // afin de différencier l'id de la question relier des autres questions
   const db = new sqlite3.Database(databaseName);
 
   // Convertir l'objet questionJSON en chaîne JSON

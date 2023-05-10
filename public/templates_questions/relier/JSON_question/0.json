@@ -1,0 +1,18 @@
+{
+  "titre_question": "essai",
+  "propositions_gauche_ecran": [
+    "a",
+    "",
+    ""
+  ],
+  "propositions_droite_ecran": [
+    "",
+    "",
+    ""
+  ],
+  "correspondances_correctes": {
+    "a": "",
+    "": ""
+  },
+  "questionnaireName": ""
+}

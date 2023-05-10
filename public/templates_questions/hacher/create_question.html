@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer une question</title>
+    <link rel="stylesheet" href="../style_prof.css">
+</head>
+<body>
+    <h1>Créer une question - Hachurerla figure pour qu'elle représente la fraction annoncée </h1>
+    <form id="create-question-form">
+        <label for="question-name">Nom de la question :</label>
+        <input type="text" id="question-name" required>
+        <label for="form-select">Choisissez une forme :</label>
+        <select name="form" id="form" >
+            <option value="rect">rectangle</option>
+            <option value="cercle">cercle</option>
+            
+        </select>
+        
+        <label for="fraction_num"> Fraction numérateur </label>
+        <input type="number" id="fraction_num"required>
+        <label for="fraction_den"> Fraction dénominateur </label>
+        <input type="number" id="fraction_den"required>
+        
+        <div id="propositions-container"></div>
+        
+        <button type="submit">Créer la question</button>
+    </form>
+
+    <script src="create_question.js"></script>
+</body>
+</html>

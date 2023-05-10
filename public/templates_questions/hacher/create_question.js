@@ -38,7 +38,8 @@ function createQuestionJSON(event) {
     forme: formu,
     fraction_numerateur: fraction_num,
     fraction_denominateur: fraction_den,
-    questionnaireName: questionnaireName
+    questionnaireName: questionnaireName,
+    questionnaireType:"hacher"
   };
 
   saveQuestionToServer(questionJSON);

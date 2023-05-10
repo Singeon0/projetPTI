@@ -97,6 +97,7 @@ app.get("/api/types_de_questions", (req, res) => {
 app.post("/api/save_questionnaire", (req, res) => {
   const { idProf, nom, questions } = req.body;
   const db = new sqlite3.Database(databaseName);
+  const idQuestionnaire = parseInt(stringToNumbers(nom), 10);
 
   const query = `
     INSERT INTO questionnaires (Id, nom, Id_utilisateurs, details_questionnaire)
@@ -119,42 +120,55 @@ app.post("/api/save_questionnaire", (req, res) => {
     }
   });
 
-  function saveQuestion(db, question, idQuestionnaire, callback) {
+  async function saveQuestion(db, question, idQuestionnaire, callback) {
     const { nom, numero_question } = question;
     const query = `
       INSERT INTO questions (nom, id_questionnaire, numero_question, infos_question)
       VALUES (?, ?, ?, ?);
     `;
 
-    var details_js;
-    console.log("ICICICICICCICI");
+    let details_js = {
+      questionnaireName: nom
+    }; // Initialise details_js avec une valeur par défaut
 
     if (question.nom == "Relier les bonnes propositions") {
+      // CODE ICI tu dois charger la question depuis la table json_question
 
       console.log(req.body.nom + "relier");
       const pathJS = req.body.nom + "relier";
-      const filePath = "public/templates_questions/relier/JSON_question/" + stringToNumbers(pathJS) + ".json";
+      const id_question = stringToNumbers(pathJS);
 
-      fs.readFile(filePath, 'utf8', (err, jsonString) => {
-        if (err) {
-          console.error('Erreur lors de la lecture du fichier:', err);
-          return;
-        }
-        try {
-          details_js = JSON.parse(jsonString);
-          // Utilisez la variable 'details_js' ici pour effectuer des opérations avec les données JSON
-        } catch (error) {
-          console.error('Erreur lors de la conversion du JSON en objet:', error);
-        }
+      // CODE ICI complètes le if
+      const queryLoad = "SELECT json FROM json_questions WHERE id_question = ?";
+      details_js = await new Promise((resolve, reject) => {
+        db.get(queryLoad, [id_question], (err, row) => {
+          if (err) {
+            console.error(err.message);
+            reject(err);
+          } else {
+            if (row) {
+              resolve(JSON.parse(row.json));
+            } else {
+              console.error("Question introuvable");
+              reject(new Error("Question introuvable"));
+            }
+          }
+        });
       });
-
     }
 
     console.log(details_js);
 
-    db.run(query, [nom, idQuestionnaire, numero_question, details_js], (err) => {
-      callback(err);
-    });
+    // Convertir l'objet questionJSON en chaîne JSON
+    const jsonString = JSON.stringify(details_js, null, 2);
+
+    if (details_js) {
+      db.run(query, [details_js.questionnaireName, idQuestionnaire, numero_question, jsonString], (err) => {
+        callback(err);
+      });
+    } else {
+      callback(new Error("Erreur lors de la récupération des détails de la question."));
+    }
   }
 
   function saveAllQuestions(db, questions, idQuestionnaire, index, finalCallback) {
@@ -171,52 +185,82 @@ app.post("/api/save_questionnaire", (req, res) => {
     }
   }
 
-  db.close();
 });
-
 //__________________________________________Sauvegarde fichier JSON_____________________________
+
+function isJSON(str) {  // vérifier que qu'une variable est au format JSON
+  try {
+    JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+
 
 app.post("/api/save_question", (req, res) => {
   const questionJSON = req.body;
   const questionId = stringToNumbers(questionJSON.questionnaireName + "relier"); // afin de différencier l'id de la question relier des autres questions
-  console.log(questionJSON.questionnaireName + "relier");
-  console.log(questionId);
-  const fileName = `${questionId}.json`;
-  const filePath = path.join(__dirname, "public/templates_questions/relier/JSON_question", fileName);
+  const db = new sqlite3.Database(databaseName);
 
-  fs.open(filePath, 'w', (err, file) => {
+  // Convertir l'objet questionJSON en chaîne JSON
+  const jsonString = JSON.stringify(questionJSON, null, 2);
+
+  // Vérifier si les données sont au format JSON valide
+  if (!isJSON(jsonString)) {
+    res.status(400).send("Les données fournies ne sont pas au format JSON valide.");
+    return;
+  }
+
+  // Requête SQL pour insérer les données dans la table json_questions
+  const query = `
+    INSERT INTO json_questions (id_question, json)
+    VALUES (?, ?);
+  `;
+
+  // Exécuter la requête SQL pour insérer les données
+  db.run(query, [questionId, jsonString], (err) => {
     if (err) {
       console.error(err.message);
-      res.status(500).send("Erreur lors de la création du fichier de question");
+      res.status(500).send("Erreur lors de l'enregistrement de la question JSON");
     } else {
-      fs.writeFile(filePath, JSON.stringify(questionJSON, null, 2), (err) => {
-        if (err) {
-          console.error(err.message);
-          res.status(500).send("Erreur lors de la sauvegarde de la question");
-        } else {
-          res.status(200).send("Question sauvegardée");
-        }
-      });
+      res.status(200).send("Question JSON enregistrée");
     }
   });
+
+  // Fermer la connexion à la base de données
+  db.close();
 });
 
 
 app.get("/api/get_question/:id", (req, res) => {
   const questionId = req.params.id;
-  const fileName = `question_${questionId}.json`;
-  const filePath = path.join(__dirname, "public/templates_questions/JSON_question", fileName);
+  const db = new sqlite3.Database(databaseName);
 
-  fs.readFile(filePath, "utf8", (err, data) => {
+  // Requête SQL pour sélectionner les données JSON à partir de l'id_question
+  const query = `
+    SELECT json
+    FROM json_questions
+    WHERE id_question = ?;
+  `;
+
+  // Exécuter la requête SQL pour récupérer les données JSON
+  db.get(query, [questionId], (err, row) => {
     if (err) {
       console.error(err.message);
-      res.status(404).send("Question introuvable");
-    } else {
+      res.status(500).send("Erreur lors de la récupération de la question");
+    } else if (row) {
       res.setHeader("Content-Type", "application/json");
-      res.send(data);
+      res.send(row.json);
+    } else {
+      res.status(404).send("Question introuvable");
     }
   });
+
+  // Fermer la connexion à la base de données
+  db.close();
 });
+
 
 // créez une route pour gérer la requête POST et enregistrer le fichier JSON dans le dossier "JSON_question"
 app.post("/api/save_json", (req, res) => {
@@ -240,4 +284,54 @@ app.post("/api/save_json", (req, res) => {
       });
     }
   });
+});
+
+
+//__________________________________________Partie étudiant_____________________________
+app.get('/api/get_questionnaire_id', (req, res) => {
+  const name = req.query.name;
+  const db = new sqlite3.Database(databaseName);
+
+  const query = `
+    SELECT Id
+    FROM questionnaires
+    WHERE nom = ?;
+  `;
+
+  db.get(query, [name], (err, row) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la récupération de l'ID du questionnaire");
+    } else {
+      if (row) {
+        res.json({ questionnaire_id: row.Id });
+      } else {
+        res.status(404).send("Aucun questionnaire trouvé avec ce nom.");
+      }
+    }
+  });
+
+  db.close();
+});
+
+app.get('/api/get_questions', (req, res) => {
+  const id = req.query.id;
+  const db = new sqlite3.Database(databaseName);
+
+  const query = `
+    SELECT nom, infos_question
+    FROM questions
+    WHERE id_questionnaire = ?;
+  `;
+
+  db.all(query, [id], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la récupération des questions");
+    } else {
+      res.json({ questions: rows });
+    }
+  });
+
+  db.close();
 });

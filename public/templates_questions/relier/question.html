@@ -13,6 +13,7 @@
     <canvas id="canvas" width="1250" height="800"></canvas>
     <button id="validateButton" class="save-button">Valider l'appariement</button>
     <script>
+        
         let left = []; // tableau des points à gauche -> permet d'accèder au contenu hors du main
         let idQuestion = 1989;
         // Charger le fichier JSON
@@ -247,8 +248,11 @@
             // Télécharger le fichier JSON
             saveQuestionToServer(results);
         }
-
-        main();
+        window.onload = () => {  console.log(localStorage.getItem("question"));
+                main();
+            }
+        
+      
     </script>
 </body>
 

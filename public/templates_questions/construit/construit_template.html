@@ -13,5 +13,25 @@
 </body>
 </html>
 <script> window.onload(() => {
-    interval_construit()
+    parameters = localStorage.getItem('question')
+    function loadJSON(idQuestion, callback) {
+        fetch(`/api/get_question/${idQuestion}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                callback(null, data);
+            })
+            .catch(error => {
+                console.error('Erreur lors du chargement du fichier JSON:', error);
+                callback(error);
+            });
+    }
+     loadJSON(idQuestion,(err, datas) =>{
+        console.log(datas)
+        interval_construit()
+    })
 }) </script>

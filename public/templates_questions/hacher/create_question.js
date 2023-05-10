@@ -4,35 +4,7 @@ function parseQuestionnaireName() {
   return questionnaireName;
 }
 
-document.getElementById("fraction_num").addEventListener("change", createPropositionsForm);
-document.getElementById("fraction_den").addEventListener("change", createPropositionsForm);
-document.getElementById("form").addEventListener("change", createPropositionsForm);
 document.getElementById("create-question-form").addEventListener("submit", createQuestionJSON);
-
-function createPropositionsForm() {
-  const numPropositions = document.getElementById("num-propositions").value;
-  const container = document.getElementById("propositions-container");
-  container.innerHTML = "";
-  
-  for (let i = 1; i <= numPropositions; i++) {
-    const labelLeft = document.createElement("label");
-    labelLeft.innerHTML = `Proposition gauche ${i} : `;
-    const inputLeft = document.createElement("input");
-    inputLeft.type = "text";
-    inputLeft.id = `proposition-left-${i}`;
-    
-    const labelRight = document.createElement("label");
-    labelRight.innerHTML = `Proposition droite ${i} : `;
-    const inputRight = document.createElement("input");
-    inputRight.type = "text";
-    inputRight.id = `proposition-right-${i}`;
-    
-    container.appendChild(labelLeft);
-    container.appendChild(inputLeft);
-    container.appendChild(labelRight);
-    container.appendChild(inputRight);
-  }
-}
 
 function saveQuestionToServer(questionJSON) {
   fetch("/api/save_question", {
@@ -57,24 +29,15 @@ function createQuestionJSON(event) {
   const questionnaireName = parseQuestionnaireName();
 
   const questionName = document.getElementById("question-name").value;
-  const numPropositions = document.getElementById("num-propositions").value;
-  const propositionsLeft = [];
-  const propositionsRight = [];
-  const correctMatches = {};
+  const formu= document.getElementById("form").value;
+  const fraction_num = document.getElementById("fraction_num").value;
+  const fraction_den = document.getElementById("fraction_den").value;
   
-  for (let i = 1; i <= numPropositions; i++) {
-    const propLeft = document.getElementById(`proposition-left-${i}`).value;
-    const propRight = document.getElementById(`proposition-right-${i}`).value;
-    propositionsLeft.push(propLeft);
-    propositionsRight.push(propRight);
-    correctMatches[propLeft] = propRight;
-  }
-
   const questionJSON = {
     titre_question: questionName,
-    propositions_gauche_ecran: propositionsLeft,
-    propositions_droite_ecran: propositionsRight,
-    correspondances_correctes: correctMatches,
+    forme: formu,
+    fraction_numerateur: fraction_num,
+    fraction_denominateur: fraction_den,
     questionnaireName: questionnaireName
   };
 

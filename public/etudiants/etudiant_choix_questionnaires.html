@@ -29,7 +29,8 @@
       if (questionnaireId) {
         // Charger les questions liées au questionnaire
         const questions = await getQuestionsByQuestionnaireId(questionnaireId);
-
+        localStorage.setItem("question",questions);
+        window.location ="../templates_questions/relier/question.html"
         console.log(questions);
       } else {
         alert("Aucun questionnaire trouvé avec ce nom.");

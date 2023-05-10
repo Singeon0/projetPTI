@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="style_prof.css">
+    <title>Document</title>
+    <style>
+        html, body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        }
+        
+        #outer {
+          height: 100%;
+          display: flex;
+        }
+        
+        #left {
+          width: 70%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 5%;
+        }
+        
+        #right {
+          width: 30%;
+          height: 100%;
+          padding: 1%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        
+        #right img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+        
+        #left input {
+          width: 60%;
+          margin-bottom: 10%;
+        }
+        h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+        #bouttonConsignes{
+            position: absolute;
+            left: 1%;
+            top: 50%;
+        }
+      </style>
+</head>
+<body>
+    <h1> création d'une question de type arbre phylogénétique</h1>
+
+    <div id="outer">
+        <div id="left">
+            <h3>Premier niveau</h3>
+          <input type="text" placeholder="choix1,choix2,choix3" />
+          <h3>Deuxième niveau</h3>
+          <input type="text" placeholder="choix1,choix2,choix3" />
+          <h3>Troisème niveau</h3>
+          <input type="text" placeholder="choix1,choix2,choix3" />
+        </div>
+        <div id="right">
+            <h2> Exemple d'arbre phylogénétique</h2>
+          <img src="images/exemple_arbre_phylo.png" alt="Placeholder image" />
+        </div>
+      </div>
+      <button id="bouttonConsignes" onclick="swal('Consignes :' , 'Pour chaque niveau de l arbre phylogénétique veuillez entrer les réponses que peuvent choisir les élèves. Séparez les choix possibles d une virgule ')">Consignes</button>
+</body>
+</html>

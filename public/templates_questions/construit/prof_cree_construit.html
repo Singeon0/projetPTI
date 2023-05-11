@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="style_prof.css">
+    <link rel="stylesheet" href="../style_prof.css">
     <title>Document</title>
     <style>
         html, body {
@@ -46,6 +46,8 @@
         
         #left input {
           width: 60%;
+        }
+        .NotlastInput{
           margin-bottom: 10%;
         }
         h2 {
@@ -57,6 +59,24 @@
             left: 1%;
             top: 50%;
         }
+        button[type="submit"] {
+          background-color: #4CAF50; /* Couleur de fond */
+          border: none; /* Supprime la bordure */
+          color: white; /* Couleur du texte */
+          padding: 12px 24px; /* Ajoute de la marge intérieure */
+          text-align: center; /* Centre le texte */
+          text-decoration: none; /* Supprime les soulignements */
+          display: inline-block; /* Affiche le bouton en ligne */
+          font-size: 16px; /* Taille de la police */
+          margin: 4px 2px; /* Ajoute de la marge extérieure */
+          cursor: pointer; /* Change le curseur au survol */
+          border-radius: 5px; /* Ajoute un arrondi aux coins */
+          transition: background-color 0.3s ease; /* Ajoute une transition de couleur au survol */
+        }
+        
+        button[type="submit"]:hover {
+          background-color: #3e8e41; /* Couleur de fond au survol */
+        }
       </style>
 </head>
 <body>
@@ -65,11 +85,12 @@
     <div id="outer">
         <div id="left">
             <h3>Premier niveau</h3>
-          <input type="text" placeholder="choix1,choix2,choix3" />
+          <input type="text" id="input1" class="NotlastInput" placeholder="choix1,choix2,choix3" />
           <h3>Deuxième niveau</h3>
-          <input type="text" placeholder="choix1,choix2,choix3" />
+          <input type="text" id="input2" class="NotlastInput" placeholder="choix1,choix2,choix3" />
           <h3>Troisème niveau</h3>
-          <input type="text" placeholder="choix1,choix2,choix3" />
+          <input type="text" id="input3" placeholder="choix1,choix2,choix3" />
+          <button onclick="construitTemplate()">Enregistrer</button>
         </div>
         <div id="right">
             <h2> Exemple d'arbre phylogénétique</h2>
@@ -79,3 +100,33 @@
       <button id="bouttonConsignes" onclick="swal('Consignes :' , 'Pour chaque niveau de l arbre phylogénétique veuillez entrer les réponses que peuvent choisir les élèves. Séparez les choix possibles d une virgule ')">Consignes</button>
 </body>
 </html>
+<script>
+
+  function construitTemplate(){
+    let choix = []
+    for (let i =0; i < 3; i++){
+    choix[i] = document.getElementById("input"+(i+1)).value;
+    }
+    const questionJSON = {
+      titre_question: "questionName",
+      choix : choix,
+  };
+  }
+
+  function saveQuestionToServer(questionJSON) {
+    fetch("/api/save_question", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(questionJSON)
+    }).then((response) => {
+        if (response.ok) {
+            alert("Question sauvegardée avec succès !");
+        } else {
+            alert("Erreur lors de la sauvegarde de la question.");
+        }
+    });
+}
+
+</script>

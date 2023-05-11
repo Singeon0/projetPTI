@@ -25,13 +25,23 @@
 
       // Récupérer l'ID du questionnaire en fonction de son nom
       const questionnaireId = await getQuestionnaireIdByName(questionnaireName);
-      console.log(questionnaireId);
+
       if (questionnaireId) {
         // Charger les questions liées au questionnaire
         const questions = await getQuestionsByQuestionnaireId(questionnaireId);
-        localStorage.setItem("question",questions);
-        window.location ="../templates_questions/relier/question.html"
-        console.log(questions);
+
+        for (let i = 0; i < questions.length; i++) {
+          const info_question = JSON.parse(questions[i].infos_question);
+          if (info_question.questionnaireType == "relier") {
+            localStorage.setItem("infos_question", JSON.stringify(info_question));
+            window.location = "../templates_questions/relier/question.html";
+          }
+
+          if (info_question.questionnaireType == "hacher") {
+            localStorage.setItem("infos_question", JSON.stringify(info_question));
+            window.location = "../templates_questions/hacher/question.html";
+          }
+        }
       } else {
         alert("Aucun questionnaire trouvé avec ce nom.");
       }

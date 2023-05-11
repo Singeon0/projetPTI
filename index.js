@@ -128,7 +128,7 @@ app.post("/api/save_questionnaire", (req, res) => {
     `;
 
     let details_js = {
-      questionnaireName: nom
+      titre_question: nom
     }; // Initialise details_js avec une valeur par défaut
 
     if (question.nom == "Relier les bonnes propositions") {
@@ -163,7 +163,7 @@ app.post("/api/save_questionnaire", (req, res) => {
     const jsonString = JSON.stringify(details_js, null, 2);
 
     if (details_js) {
-      db.run(query, [details_js.questionnaireName, idQuestionnaire, numero_question, jsonString], (err) => {
+      db.run(query, [details_js.titre_question, idQuestionnaire, numero_question, jsonString], (err) => {
         callback(err);
       });
     } else {

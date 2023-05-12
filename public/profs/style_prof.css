@@ -1,6 +1,5 @@
 html {
-  background: rgb(63,94,251);
-  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+  background-color: #ADD8E6;
   font-family: "Roboto", sans-serif;
   color: #fff;
 

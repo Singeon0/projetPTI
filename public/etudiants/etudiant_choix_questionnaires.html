@@ -41,6 +41,10 @@
             localStorage.setItem("infos_question", JSON.stringify(info_question));
             window.location = "../templates_questions/hacher/question.html";
           }
+          if (info_question.questionnaireType == "construit") {
+            localStorage.setItem("infos_question", JSON.stringify(info_question));
+            window.location = "../templates_questions/construit/construit_template.html";
+          }
         }
       } else {
         alert("Aucun questionnaire trouvé avec ce nom.");

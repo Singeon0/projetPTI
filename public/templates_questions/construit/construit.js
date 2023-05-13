@@ -1,15 +1,23 @@
-var options_construit = [["..............................","Tête","Yeux","Bouche","Tête/yeux/bouche"],[],[],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"]];
-options_construit[1] = ["..............................","Squelette interne","N'a pas de squelette interne","Squelette externe","N'a pas de squelette externe","Corps mou","N'a pas un corps mou"];
-options_construit[2]= options_construit[1];
-for(let i =0; i < 4; i++){
-    options_construit[i+3] = ["..............................","Coquille","N'a pas de coquille","Corps avec anneaux","Corps sans anneaux","8 pattes","Pas 8 pattes","Plumes","Pas de plumes",'6 pattes et 2 antennes',"Pas 6 pattes et 2 antennes","Poils","Pas de poils"]
-}
+// var options_construit = [["..............................","Tête","Yeux","Bouche","Tête/yeux/bouche"],[],[],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"]];
+// options_construit[1] = ["..............................","Squelette interne","N'a pas de squelette interne","Squelette externe","N'a pas de squelette externe","Corps mou","N'a pas un corps mou"];
+// options_construit[2]= options_construit[1];
+
+// for(let i =0; i < 4; i++){
+//     options_construit[i+3] = ["..............................","Coquille","N'a pas de coquille","Corps avec anneaux","Corps sans anneaux","8 pattes","Pas 8 pattes","Plumes","Pas de plumes",'6 pattes et 2 antennes',"Pas 6 pattes et 2 antennes","Poils","Pas de poils"]
+// }
 var coordX_select_construit = [110, 460,460,840,840,840,840];
 var coordY_select_construit = [1014,864,1164,770,920,1120,1280];
 var position_construit = 1;
 var selected_construit = [false,false,false,false,false,false];
 var pair_construit = [0,2,1,4,3,6,5];
-function interval_construit(){
+function interval_construit(propositions){
+    let options_construit = [];
+    for(let j = 0; j < 3; j++){
+        for(let i =0; i < (2*j)+1; i++){
+            option_construit[j] = propositions[j].split(',');
+        } 
+    }
+  
     HEIGHT = 1500;
     document.getElementById("canvas").style.height = "1500px";
     document.getElementById("body").style.height= "1800px";

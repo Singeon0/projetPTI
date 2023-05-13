@@ -20,8 +20,10 @@
         window.location.href = "../templates_questions/relier/create_question.html?questionnaireName=" + questionnaireNameValue;
       }
       else if (typeQuestion == "hacher") {
-        console.log('hiaaaaa')
         window.location.href = "../templates_questions/hacher/create_question.html?questionnaireName=" + questionnaireNameValue;
+      }
+      else if (typeQuestion == "construit") {
+        window.location.href = "../templates_questions/consyruit/prof_cree_construit.html?questionnaireName=" + questionnaireNameValue;
       }
     }
 
@@ -35,6 +37,9 @@
 
         var bouton2 = document.getElementById("hacher");
         bouton2.setAttribute("onclick", "openPage('hacher')");
+
+        var bouton3 = document.getElementById("construit");
+        bouton3.setAttribute("onclick", "openPage('construit')");
       });
     }
 
@@ -73,6 +78,12 @@
               button.setAttribute("onclick", "openPage()");
             }
 
+               // Ajouter un écouteur d'événement pour le clic sur le bouton
+               if (label.textContent === "construit") {
+                // Si c'est le cas, ajouter l'attribut id "relier" au bouton
+                button.setAttribute("id", "construit");
+                button.setAttribute("onclick", "openPage()");
+              }
             // Ajouter le bouton à la page
             document.body.appendChild(button);
 

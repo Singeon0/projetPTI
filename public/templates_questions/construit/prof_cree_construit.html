@@ -48,7 +48,7 @@
           width: 60%;
         }
         .NotlastInput{
-          margin-bottom: 10%;
+          margin-bottom: 5%;
         }
         h2 {
             margin-top: 0;
@@ -83,7 +83,9 @@
     <h1> création d'une question de type arbre phylogénétique</h1>
 
     <div id="outer">
-        <div id="left">
+        <div id="left">     
+          <label for="question-name">Nom de la question :</label>
+          <input type="text"  class="NotlastInput" id="nomQuestion" >
             <h3>Premier niveau</h3>
           <input type="text" id="input1" class="NotlastInput" placeholder="choix1,choix2,choix3" />
           <h3>Deuxième niveau</h3>
@@ -107,10 +109,13 @@
     for (let i =0; i < 3; i++){
     choix[i] = document.getElementById("input"+(i+1)).value;
     }
+    let nomQuestion = document.getElementById("nomQuestion").value
     const questionJSON = {
-      titre_question: "questionName",
+      titre_question: nomQuestion,
       choix : choix,
+      questionnaireType: "construit",
   };
+  saveQuestionToServer(questionJSON)
   }
 
   function saveQuestionToServer(questionJSON) {

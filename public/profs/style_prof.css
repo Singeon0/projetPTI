@@ -26,6 +26,27 @@ button {
   font-size: 1.5rem;
   transition: background-color 0.3s ease;
 }
+
+p {
+  font-size: 1.5rem;
+  color: #fff;
+  text-align: center;
+  margin-top: 50px;
+  text-shadow: 2px 2px 4px #000000;
+  padding: 10px;
+  background-color: #F9B872;
+}
+
+label {
+  font-size: 1.5rem;
+  color: #fff;
+  text-align: center;
+  margin-top: 50px;
+  text-shadow: 2px 2px 4px #000000;
+  padding: 10px;
+  background-color: #F9B872;
+}
+
 button:hover {
   background-color: #1f7ab6;
 }

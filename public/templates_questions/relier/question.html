@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../style_prof.css">
 </head>
 
-<body> 
+<body>
     <h1 id="questionnaireName">Connecter les points</h1>
     <p>Cliquez sur un point à gauche, puis sur un point à droite pour tracer une ligne entre eux.</p>
     <canvas id="canvas" width="1250" height="800"></canvas>
@@ -16,35 +16,12 @@
 
         let left = []; // tableau des points à gauche -> permet d'accèder au contenu hors du main
 
-        // Charger le fichier JSON
-        function loadJSON(idQuestion, callback) {
-            fetch(`/api/get_question/${idQuestion}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Erreur HTTP ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    callback(null, data);
-                })
-                .catch(error => {
-                    console.error('Erreur lors du chargement du fichier JSON:', error);
-                    callback(error);
-                });
-        }
-
         function updateTitle(title) {
             document.getElementById("questionnaireName").textContent = title;
         }
 
 
         function main(propositions) {
-            // loadJSON(idQuestion, (error, propositions) => {
-            //     if (error) {
-            //         return;
-            //     }
-
             // Mettre à jour le titre <h1> avec la valeur de propositions.questionnaireName
             updateTitle(propositions.titre_question);
 
@@ -214,40 +191,58 @@
             drawPoints();
 
             // Ajoutez cet écouteur d'événement pour le bouton "Valider l'appariement" à la fin de la fonction main()
-            document.getElementById("validateButton").addEventListener("click", saveResults);
+            document.getElementById("validateButton").addEventListener("click", saveResults(propositions));
 
         }
 
-        function saveQuestionToServer(questionJSON) {
-            fetch("/api/save_json", {
+        function saveNoteToServer(note, propositions) {
+            console.log(propositions);
+            const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + propositions.questionnaireId;
+
+            fetch("/api/save-note", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(questionJSON) // Convertir l'objet en chaîne JSON
-            }).then((response) => {
-                if (response.ok) {
-                    alert("Question sauvegardée avec succès !");
-                } else {
-                    alert("Erreur lors de la sauvegarde de la question.");
-                }
-            });
+                body: JSON.stringify({
+                    nomPrenom_idQuestionnaire: nomPrenom_idQuestionnaire,
+                    nom_question: propositions.titre_question,
+                    note_obtenu: note,
+                    id_notes_questions: propositions.questionnaireId
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => console.log(data))
+                .catch((error) => console.error("Error:", error));
         }
 
 
         // Ajoutez cette fonction pour enregistrer les résultats
-        function saveResults() {
-            const results = {};
+        function saveResults(propositions) {
+            return function () {
+                const correspondances_correctes = propositions.correspondances_correctes;
+                const results = {};
 
-            for (const point of left) {
-                if (point.connectedTo) {
-                    results[point.propLinked] = point.connectedTo.propLinked;
+                for (const point of left) {
+                    if (point.connectedTo) {
+                        results[point.propLinked] = point.connectedTo.propLinked;
+                    }
                 }
-            }
+                var good = 0.0;
+                var total = 0.0;
+                for (var key in results) {
+                    total += 1.0;
+                    if (results[key] == correspondances_correctes[key]) {
+                        good += 1.0;
+                    }
+                }
 
-            // Télécharger le fichier JSON
-            saveQuestionToServer(results);
+                const note = good / total;
+                saveNoteToServer(note, propositions);
+            }
         }
+
+        // Exécution au lancement de la page
         window.onload = () => {
             const propositions = JSON.parse(localStorage.getItem("infos_question"));
             console.log(propositions);

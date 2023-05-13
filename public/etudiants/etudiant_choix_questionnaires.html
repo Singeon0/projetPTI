@@ -12,31 +12,38 @@
     <h1>Entrez le nom du questionnaire</h1>
     <form class="form-container">
       <div class="form-group">
+        <input type="text" class="form-control" name="nomPrenom" placeholder="Nom et prénom" required>
+      </div>
+      <div class="form-group">
         <input type="text" class="form-control" name="nomQuestionnaire" placeholder="Nom du questionnaire" required>
       </div>
       <button type="submit" class="btn">Charger le questionnaire</button>
     </form>
-  </div> 
+  </div>
   <script>
     document.querySelector("form").addEventListener("submit", async (event) => {
       event.preventDefault();
 
+      const nomPrenom = document.querySelector('input[name="nomPrenom"]').value;
       const questionnaireName = document.querySelector('input[name="nomQuestionnaire"]').value;
 
       // Récupérer l'ID du questionnaire en fonction de son nom
       const questionnaireId = await getQuestionnaireIdByName(questionnaireName);
 
       if (questionnaireId) {
+        // Ajouter l'entrée dans la table "notes_eleves"
+        await createNotesElevesEntry(nomPrenom, questionnaireId);
+
         // Charger les questions liées au questionnaire
         const questions = await getQuestionsByQuestionnaireId(questionnaireId);
 
         for (let i = 0; i < questions.length; i++) {
-          const info_question = JSON.parse(questions[i].infos_question);
-          if (info_question.questionnaireType == "relier") {
-            localStorage.setItem("infos_question", JSON.stringify(info_question));
-            window.location = "../templates_questions/relier/question.html";
-          }
+          let info_question = JSON.parse(questions[i].infos_question);
+          // Ajout à infos un attribut "nomPrenom" ainsi que "questionnaireId"
+          info_question.nomPrenom = nomPrenom;
+          info_question.questionnaireId = questionnaireId;
 
+          console.log(typeof info_question);
           if (info_question.questionnaireType == "hacher") {
             localStorage.setItem("infos_question", JSON.stringify(info_question));
             window.location = "../templates_questions/hacher/question.html";
@@ -45,11 +52,36 @@
             localStorage.setItem("infos_question", JSON.stringify(info_question));
             window.location = "../templates_questions/construit/construit_template.html";
           }
+          if (info_question.questionnaireType == "relier") {
+            localStorage.setItem("infos_question", JSON.stringify(info_question));
+            window.location = "../templates_questions/relier/question.html";
+          }
         }
       } else {
         alert("Aucun questionnaire trouvé avec ce nom.");
       }
     });
+
+    async function createNotesElevesEntry(nomPrenom, questionnaireId) {
+      try {
+        const response = await fetch('/api/create_notes_eleves_entry', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ nomPrenom, questionnaireId })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Erreur lors de la création de l'entrée dans la table notes_eleves:", error);
+      }
+    }
+
 
     async function getQuestionnaireIdByName(name) {
       try {

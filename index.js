@@ -200,8 +200,7 @@ function isJSON(str) {  // vérifier que qu'une variable est au format JSON
 
 app.post("/api/save_question", (req, res) => {
   const questionJSON = req.body;
-  console.log('questionJSON :>> ', questionJSON);
-  const questionId = stringToNumbers(questionJSON.questionnaireName +questionJSON.questionnaireType); // afin de différencier l'id de la question relier des autres questions
+  const questionId = stringToNumbers(questionJSON.questionnaireName + questionJSON.questionnaireType); // afin de différencier l'id de la question relier des autres questions
   const db = new sqlite3.Database(databaseName);
 
   // Convertir l'objet questionJSON en chaîne JSON
@@ -336,3 +335,50 @@ app.get('/api/get_questions', (req, res) => {
 
   db.close();
 });
+
+
+app.post('/api/create_notes_eleves_entry', (req, res) => {
+  const { nomPrenom, questionnaireId } = req.body;
+  const db = new sqlite3.Database(databaseName);
+
+  const query = `
+    INSERT INTO notes_eleves (nom_prenom, id_questionnaire)
+    VALUES (?, ?);
+  `;
+
+  db.run(query, [nomPrenom, questionnaireId], (err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la création de l'entrée dans la table notes_eleves");
+    } else {
+      res.status(200).send("Entrée créée avec succès dans la table notes_eleves");
+    }
+  });
+
+  db.close();
+});
+
+
+app.post("/api/save-note", (req, res) => {
+  console.log(req.body);
+  const { nomPrenom_idQuestionnaire, nom_question, note_obtenu, id_notes_questions } = req.body;
+  const db = new sqlite3.Database(databaseName);
+
+  // Insérez les données dans la base de données
+  const query = `
+    INSERT INTO notes (nomPrenom_idQuestionnaire, nom_question, note_obtenu, id_notes_questions)
+    VALUES (?, ?, ?, ?);
+  `;
+
+  db.run(query, [nomPrenom_idQuestionnaire, nom_question, note_obtenu, id_notes_questions], (err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).json({ error: "Erreur lors de l'enregistrement de la note" });
+    } else {
+      res.status(200).json({ message: "Note enregistrée avec succès" });
+    }
+  });
+
+  db.close();
+});
+

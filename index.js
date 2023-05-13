@@ -340,6 +340,7 @@ app.get('/api/get_questions', (req, res) => {
 app.post('/api/create_notes_eleves_entry', (req, res) => {
   const { nomPrenom, questionnaireId } = req.body;
   const db = new sqlite3.Database(databaseName);
+  console.log(req.body)
 
   const query = `
     INSERT INTO notes_eleves (nom_prenom, id_questionnaire)

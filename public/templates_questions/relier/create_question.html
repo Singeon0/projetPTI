@@ -19,11 +19,16 @@
 
         <div id="propositions-container"></div>
 
-        <button type="submit">Créer la question</button>
+        <button type="submit" onclick="goBack()">Créer la question</button>
     </form>
 
     <script>
         let questionnaireName;
+
+        function goBack() {
+            window.history.back();
+        }
+
 
         function parseQuestionnaireName() {
             const urlParams = new URLSearchParams(window.location.search);

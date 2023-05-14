@@ -99,23 +99,31 @@
           <img src="images/exemple_arbre_phylo.png" alt="Placeholder image" />
         </div>
       </div>
-      <button id="bouttonConsignes" onclick="swal('Consignes :' , 'Pour chaque niveau de l arbre phylogénétique veuillez entrer les réponses que peuvent choisir les élèves. Séparez les choix possibles d une virgule ')">Consignes</button>
+      <button id="bouttonConsignes" onclick="swal('Consignes :' , 'Pour chaque niveau de l arbre phylogénétique veuillez entrer les réponses que peuvent choisir les élèves. Séparez les choix possibles d une virgule. Mettez en premier choix la proposition valide ')">Consignes</button>
 </body>
 </html>
 <script>
-
+  function parseQuestionnaireName() {
+    const urlParams = new URLSearchParams(window.location.search);
+    questionnaireName = urlParams.get("questionnaireName");
+    console.log(questionnaireName)
+    return questionnaireName;
+}
   function construitTemplate(){
     let choix = []
     for (let i =0; i < 3; i++){
     choix[i] = document.getElementById("input"+(i+1)).value;
     }
     let nomQuestion = document.getElementById("nomQuestion").value
+    let nomQuestionnaire = parseQuestionnaireName();
     const questionJSON = {
-      titre_question: nomQuestion,
+      titre_question:nomQuestion,
       choix : choix,
       questionnaireType: "construit",
+      questionnaireName: nomQuestionnaire,
   };
   saveQuestionToServer(questionJSON)
+  window.history.back();
   }
 
   function saveQuestionToServer(questionJSON) {

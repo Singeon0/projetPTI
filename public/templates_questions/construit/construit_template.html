@@ -12,26 +12,15 @@
     <script src="construit.js"></script>
 </body>
 </html>
-<script> window.onload(() => {
-    parameters = localStorage.getItem('question')
-    function loadJSON(idQuestion, callback) {
-        fetch(`/api/get_question/${idQuestion}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Erreur HTTP ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                callback(null, data);
-            })
-            .catch(error => {
-                console.error('Erreur lors du chargement du fichier JSON:', error);
-                callback(error);
-            });
-    }
-     loadJSON(idQuestion,(err, datas) =>{
-        console.log(datas)
+<script> 
+window.onload(() => {
+    const propositions = JSON.parse(localStorage.getItem("infos_question"));
+    console.log(propositions);
+    localStorage.removeItem("infos_question"); // Supprimer l'élément après l'avoir récupéré
+
+
         interval_construit()
-    })
-}) </script>
+    
+}) 
+
+</script>

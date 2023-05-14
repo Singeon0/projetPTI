@@ -157,6 +157,33 @@ app.post("/api/save_questionnaire", (req, res) => {
       });
     }
 
+    else if (question.nom == "Hâchure fractions") {
+      // CODE ICI tu dois charger la question depuis la table json_question
+
+      console.log(req.body.nom + "hacher");
+      const pathJS = req.body.nom + "hacher";
+      const id_question = stringToNumbers(pathJS);
+
+      // CODE ICI complètes le if
+      const queryLoad = "SELECT json FROM json_questions WHERE id_question = ?";
+      details_js = await new Promise((resolve, reject) => {
+        db.get(queryLoad, [id_question], (err, row) => {
+          if (err) {
+            console.error(err.message);
+            reject(err);
+          } else {
+            if (row) {
+              resolve(JSON.parse(row.json));
+            } else {
+              console.error("Question introuvable");
+              reject(new Error("Question introuvable"));
+            }
+          }
+        });
+      });
+
+    }
+
     console.log(details_js);
 
     // Convertir l'objet questionJSON en chaîne JSON
@@ -200,6 +227,7 @@ function isJSON(str) {  // vérifier que qu'une variable est au format JSON
 
 app.post("/api/save_question", (req, res) => {
   const questionJSON = req.body;
+  console.log(req.body);
   const questionId = stringToNumbers(questionJSON.questionnaireName + questionJSON.questionnaireType); // afin de différencier l'id de la question relier des autres questions
   const db = new sqlite3.Database(databaseName);
 

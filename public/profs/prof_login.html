@@ -1,57 +1,44 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page de login</title>
-  <link rel="stylesheet" href="style_prof.css">
-  <style>
-    body {
-      font-family: "Roboto", sans-serif;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    input {
-      margin: 10px;
-    }
-    button {
-      margin-top: 20px;
-    }
-  </style>
+  <title>Login Prof</title>
+  <link rel="stylesheet" type="text/css" href="../profs/style_prof.css">
 </head>
+
 <body>
-  <h1>Se connecter</h1>
-  <form id="login-form">
-    <label for="id">ID:</label>
-    <input type="text" id="id" name="id" required>
-    <label for="password">Mot de passe:</label>
-    <input type="password" id="password" name="password" required>
-    <button type="submit">Se connecter</button>
+  <form id="login-form" action="/api/login" method="post">
+    <label for="id">ID:</label><br>
+    <input type="number" id="id" name="id"><br>
+    <label for="password">Mot de passe:</label><br>
+    <input type="password" id="password" name="password"><br>
+    <input type="submit" value="Se connecter">
   </form>
   <script>
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const id = document.getElementById('id').value;
-      const password = document.getElementById('password').value;
+    document.getElementById('login-form').addEventListener('submit', function (event) {
+      event.preventDefault();
 
-      const response = await fetch('/credentials', {
+      var id = document.getElementById('id').value;
+      var password = document.getElementById('password').value;
+
+      fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id, password })
-      });
-      console.log(response.statut)
-      if (response.statut == 'success') {
-       
-      } else {
-        alert('Identifiant ou mot de passe incorrect');
-      }
+        body: JSON.stringify({ id: id, password: password })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = 'prof.html?id=' + id;
+          } else {
+            alert('ID ou mot de passe incorrect.');
+          }
+        });
     });
+
   </script>
 </body>
+
 </html>

@@ -4,6 +4,11 @@ function parseQuestionnaireName() {
   return questionnaireName;
 }
 
+function goBack() {
+  window.history.back();
+}
+
+
 document.getElementById("create-question-form").addEventListener("submit", createQuestionJSON);
 
 function saveQuestionToServer(questionJSON) {

@@ -42,8 +42,6 @@
           // Ajout à infos un attribut "nomPrenom" ainsi que "questionnaireId"
           info_question.nomPrenom = nomPrenom;
           info_question.questionnaireId = questionnaireId;
-
-          console.log(typeof info_question);
           if (info_question.questionnaireType == "hacher") {
             localStorage.setItem("infos_question", JSON.stringify(info_question));
             window.location = "../templates_questions/hacher/question.html";

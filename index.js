@@ -352,7 +352,8 @@ app.post('/api/create_notes_eleves_entry', (req, res) => {
       console.error(err.message);
       res.status(500).send("Erreur lors de la création de l'entrée dans la table notes_eleves");
     } else {
-      res.status(200).send("Entrée créée avec succès dans la table notes_eleves");
+      //res.status(200).send("Entrée créée avec succès dans la table notes_eleves");
+      res.json({ message: "Entrée créée avec succès dans la table notes_eleves" });
     }
   });
 

@@ -114,15 +114,16 @@
     for (let i =0; i < 3; i++){
     choix[i] = document.getElementById("input"+(i+1)).value;
     }
-    let nomQuestion = document.getElementById("nomQuestion").value
-    let nomQuestionnaire = parseQuestionnaireName();
+    const nomQuestion = document.getElementById("nomQuestion").value
+    const nomQuestionnaire = parseQuestionnaireName();
     const questionJSON = {
-      titre_question:nomQuestion,
+      titre_question: nomQuestion,
       choix : choix,
       questionnaireType: "construit",
       questionnaireName: nomQuestionnaire,
   };
   saveQuestionToServer(questionJSON)
+  console.log('questionJSON :>> ', questionJSON);
   window.history.back();
   }
 

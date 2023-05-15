@@ -42,17 +42,20 @@
           // Ajout à infos un attribut "nomPrenom" ainsi que "questionnaireId"
           info_question.nomPrenom = nomPrenom;
           info_question.questionnaireId = questionnaireId;
-
-          console.log(typeof info_question);
+          if (info_question.questionnaireType == "hacher") {
+            localStorage.setItem("infos_question", JSON.stringify(info_question));
+            window.location = "../templates_questions/hacher/question.html";
+          }
+          if (info_question.questionnaireType == "construit") {
+            localStorage.setItem("infos_question", JSON.stringify(info_question));
+            window.location = "../templates_questions/construit/construit_template.html";
+          }
           if (info_question.questionnaireType == "relier") {
             localStorage.setItem("infos_question", JSON.stringify(info_question));
             window.location = "../templates_questions/relier/question.html";
           }
 
-          if (info_question.questionnaireType == "hacher") {
-            localStorage.setItem("infos_question", JSON.stringify(info_question));
-            window.location = "../templates_questions/hacher/question.html";
-          }
+       
         }
       } else {
         alert("Aucun questionnaire trouvé avec ce nom.");

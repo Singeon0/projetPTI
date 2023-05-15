@@ -27,22 +27,43 @@
       }
     }
 
-    window.onload = function () {
-      var questionnaireName = document.getElementById("questionnaireName");
-      questionnaireName.addEventListener("input", function () {
-        // naviguer vers la page "create_prof.html"
+    function saveStateToLocalStorage() {
+      const selectedQuestions = getSelectedQuestions();
+      const questionnaireName = document.getElementById("questionnaireName").value;
 
-        var bouton = document.getElementById("relier");
-        bouton.setAttribute("onclick", "openPage('relier')");
+      const state = {
+        selectedQuestions: selectedQuestions,
+        questionnaireName: questionnaireName
+      };
 
-        var bouton2 = document.getElementById("hacher");
-        bouton2.setAttribute("onclick", "openPage('hacher')");
-
-        var bouton3 = document.getElementById("construit");
-        bouton3.setAttribute("onclick", "openPage('construit')");
-      });
+      localStorage.setItem("questionnaireState", JSON.stringify(state));
     }
 
+    window.onload = function () {
+      var questionnaireName = document.getElementById("questionnaireName");
+      
+      questionnaireName.addEventListener("input", function () {
+        saveStateToLocalStorage();
+      });
+
+      // Check localStorage for saved state
+      const savedState = JSON.parse(localStorage.getItem("questionnaireState"));
+      if (savedState) {
+        questionnaireName.value = savedState.questionnaireName;
+        updateButtons();
+      }
+    }
+
+    function updateButtons() {
+      var bouton = document.getElementById("relier");
+      bouton.setAttribute("onclick", "openPage('relier')");
+
+      var bouton2 = document.getElementById("hacher");
+      bouton2.setAttribute("onclick", "openPage('hacher')");
+
+      var bouton3 = document.getElementById("construit");
+      bouton3.setAttribute("onclick", "openPage('construit')");
+    }
 
     function loadTypesDeQuestions() {
       fetch("/api/types_de_questions")
@@ -55,6 +76,7 @@
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.style.width = "10%";
+            checkbox.addEventListener("change", saveStateToLocalStorage);
 
             const label = document.createElement("label");
             label.textContent = type.type_question;
@@ -64,34 +86,36 @@
             button.textContent = "Personnaliser";
             button.style.width = "30%";
             button.classList.add("button");
+
+            // Check the appropriate checkboxes
+            const savedState = JSON.parse(localStorage.getItem("questionnaireState"));
+            if (savedState) {
+              savedState.selectedQuestions.forEach(question => {
+                if (question.nom === type.type_question) {
+                  checkbox.checked = true
+                }
+              });
+            }
+
             // Ajouter un écouteur d'événement pour le clic sur le bouton
             if (label.textContent === "Relier les bonnes propositions") {
-              // Si c'est le cas, ajouter l'attribut id "relier" au bouton
               button.setAttribute("id", "relier");
-              button.setAttribute("onclick", "openPage()");
             }
-
-            // Ajouter un écouteur d'événement pour le clic sur le bouton
             if (label.textContent === "Hâchure fractions") {
-              // Si c'est le cas, ajouter l'attribut id "relier" au bouton
               button.setAttribute("id", "hacher");
-              button.setAttribute("onclick", "openPage()");
+            }
+            if (label.textContent === "construit") {
+              button.setAttribute("id", "construit");
             }
 
-               // Ajouter un écouteur d'événement pour le clic sur le bouton
-               if (label.textContent === "construit") {
-                // Si c'est le cas, ajouter l'attribut id "relier" au bouton
-                button.setAttribute("id", "construit");
-                button.setAttribute("onclick", "openPage()");
-              }
-            // Ajouter le bouton à la page
-            document.body.appendChild(button);
+            button.setAttribute("onclick", "openPage('"+ button.getAttribute("id") +"')");
 
             div.appendChild(checkbox);
             div.appendChild(label);
             div.appendChild(button);
             questionsContainer.appendChild(div);
           });
+          updateButtons();
         });
     }
 
@@ -119,6 +143,8 @@
     function saveQuestionnaire() {
       const questionnaireName = document.getElementById("questionnaireName").value;
       const selectedQuestions = getSelectedQuestions();
+      console.log(selectedQuestions);
+      console.log(questionnaireName);
       fetch("/api/save_questionnaire", {
         method: "POST",
         headers: {
@@ -132,19 +158,22 @@
       }).then(response => {
         if (response.ok) {
           alert("Questionnaire sauvegardé avec succès");
+          // Après avoir enregistré le questionnaire, supprimez les données du localStorage
+          localStorage.removeItem('questionnaireState');
+
         } else {
           alert("Erreur lors de la sauvegarde du questionnaire");
         }
       });
     }
-
-
   </script>
 </head>
 
 <body>
   <h1>Création de questionnaire</h1>
-  <input type="text" id="questionnaireName" placeholder="Nom du questionnaire" style="width: 100%; text-align: center; font-size: 20px; padding: 20px 10px; margin-bottom: 50px;">  <div id="questionsContainer"></div>
+  <input type="text" id="questionnaireName" placeholder="Nom du questionnaire"
+    style="width: 100%; text-align: center; font-size: 20px; padding: 20px 10px; margin-bottom: 50px;">
+  <div id="questionsContainer"></div>
   <button class="save-button" onclick="saveQuestionnaire()">Sauvegarder le questionnaire</button>
 </body>
 

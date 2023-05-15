@@ -41,9 +41,10 @@
 
     window.onload = function () {
       var questionnaireName = document.getElementById("questionnaireName");
-      
+
       questionnaireName.addEventListener("input", function () {
         saveStateToLocalStorage();
+        updateButtons(); // Update buttons when questionnaire name changes
       });
 
       // Check localStorage for saved state
@@ -55,14 +56,23 @@
     }
 
     function updateButtons() {
+      const questionnaireName = document.getElementById("questionnaireName").value;
+      const isNameEmpty = !questionnaireName || questionnaireName.trim() === '';
+
       var bouton = document.getElementById("relier");
       bouton.setAttribute("onclick", "openPage('relier')");
+      bouton.disabled = isNameEmpty;
 
       var bouton2 = document.getElementById("hacher");
       bouton2.setAttribute("onclick", "openPage('hacher')");
+      bouton2.disabled = isNameEmpty;
 
       var bouton3 = document.getElementById("construit");
       bouton3.setAttribute("onclick", "openPage('construit')");
+      bouton3.disabled = isNameEmpty;
+
+      var saveButton = document.querySelector(".save-button");
+      saveButton.disabled = isNameEmpty;
     }
 
     function loadTypesDeQuestions() {
@@ -173,8 +183,9 @@
   <h1>Création de questionnaire</h1>
   <input type="text" id="questionnaireName" placeholder="Nom du questionnaire"
     style="width: 100%; text-align: center; font-size: 20px; padding: 20px 10px; margin-bottom: 50px;">
-  <div id="questionsContainer"></div>
-  <button class="save-button" onclick="saveQuestionnaire()">Sauvegarder le questionnaire</button>
+    <div id="questionsContainer"></div>
+    <button class="save-button" onclick="saveQuestionnaire()">Sauvegarder le questionnaire</button>
 </body>
-
+  
 </html>
+  

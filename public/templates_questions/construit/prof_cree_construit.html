@@ -92,7 +92,7 @@
           <input type="text" id="input2" class="NotlastInput" placeholder="choix1,choix2,choix3" />
           <h3>Troisème niveau</h3>
           <input type="text" id="input3" placeholder="choix1,choix2,choix3" />
-          <button onclick="construitTemplate()">Enregistrer</button>
+          <button onclick="construitTemplate()" onclick="goBack()">Enregistrer</button>
         </div>
         <div id="right">
             <h2> Exemple d'arbre phylogénétique</h2>
@@ -103,6 +103,11 @@
 </body>
 </html>
 <script>
+        function goBack() {
+            window.history.back();
+        }
+
+
   function parseQuestionnaireName() {
     const urlParams = new URLSearchParams(window.location.search);
     questionnaireName = urlParams.get("questionnaireName");

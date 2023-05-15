@@ -58,6 +58,42 @@ app.get('/api/questionnaires/:idProf', (req, res) => {
 });
 
 
+
+// --------------------------------------LOGIN PROF--------------------------------------
+app.post('/api/login', (req, res) => {
+  const id = req.body.id;
+  const password = req.body.password;
+  const db = new sqlite3.Database(databaseName);
+
+  const query = `
+  SELECT * FROM utilisateurs
+  WHERE Id = ? AND password = ? AND role = '1';
+  `;
+
+  console.log(req.body);
+
+  db.get(query, [id, password], (err, row) => {
+      if (err) {
+          console.error(err.message);
+          res.status(500).json({ success: false });
+      } else {
+          if (row) {
+              res.json({ success: true });
+          } else {
+              res.json({ success: false });
+          }
+      }
+  });
+
+  db.close();
+});
+
+
+
+
+
+
+
 //---------------------------------Gestion des questionnaires--------------------------------------------------------------
 
 // Gestion des id questionnaires : permet de créer un id sur base du nom du questionnaire

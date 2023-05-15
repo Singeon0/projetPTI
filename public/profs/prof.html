@@ -12,6 +12,18 @@
 
   </style>
   <script>
+    let idProf;
+
+    function parseIdProf() {
+      const urlParams = new URLSearchParams(window.location.search);
+      idProf = urlParams.get("id");
+      return idProf;
+    }
+
+    window.onload = function () {
+      idProf = parseIdProf();
+    }
+
     function loadQuestionnaires() {
       const idProf = document.getElementById("idProf").value;
       fetch(`/api/questionnaires/${idProf}`)
@@ -40,16 +52,15 @@
           });
         });
     }
-    function openPage() {
-      const idProf = document.getElementById("idProf").value;    
+    
+    function openPage() { 
+      console.log(idProf);
       window.location.href = "prof_choix_questions.html?idProf=" + idProf;
   }
   </script>
 </head>
 <body style="display: flex; flex-direction: column; align-items: center;">
   <h1>Liste des questionnaires créés</h1>
-  <label for="id">ID prof:</label> <!-- id du prof dont on veut afficher la liste des questionnaire -->
-  <input type="text" id="idProf" name="idProf" required>
   <button type="button" onclick="loadQuestionnaires()">Charger les questionnaires</button>
   <div id="questionnairesContainer"></div>
   <button class="save-button" onclick="openPage()">Créer questionnaire</button> <!-- AJOUTER QUE SI PAS D'ID RENSEIGNÉ LA PAGE NE PEUT PAS S'OUVRIR -->

@@ -158,7 +158,7 @@ app.post("/api/save_questionnaire", (req, res) => {
       });
     }
 
-    if (question.nom == "construit") {
+    else if (question.nom == "construit") {
 
       console.log(req.body.nom + "construit");
       const pathJS = req.body.nom + "construit";

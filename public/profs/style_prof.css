@@ -27,6 +27,12 @@ button {
   transition: background-color 0.3s ease;
 }
 
+buttonProf {
+  position: absolute;
+  background-color:#B6E1E7;
+  left: 1px;
+}
+
 p {
   font-size: 1.5rem;
   color: #fff;
@@ -39,12 +45,12 @@ p {
 
 label {
   font-size: 1.5rem;
-  color: #fff;
+  color: #F9B872;
   text-align: center;
   margin-top: 50px;
-  text-shadow: 2px 2px 4px #000000;
+  text-shadow: 2px 2px 4px #F9B872;
   padding: 10px;
-  background-color: #F9B872;
+  
 }
 
 button:hover {
@@ -142,4 +148,12 @@ nav a {
 
 nav a:hover {
   color: #ccc;
+}
+
+.custom-button {
+  /* Styles spécifiques à votre bouton personnalisé */
+  background-color: #B6E1E7;
+  color: #ffffff;
+  font-size: 16px;
+
 }

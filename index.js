@@ -137,6 +137,7 @@ app.post("/api/save_questionnaire", (req, res) => {
       console.log(req.body.nom + "relier");
       const pathJS = req.body.nom + "relier";
       const id_question = stringToNumbers(pathJS);
+      console.log('id_question :>> ', id_question);
 
       // CODE ICI complètes le if
       const queryLoad = "SELECT json FROM json_questions WHERE id_question = ?";
@@ -157,14 +158,13 @@ app.post("/api/save_questionnaire", (req, res) => {
       });
     }
 
-    else if (question.nom == "Hâchure fractions") {
-      // CODE ICI tu dois charger la question depuis la table json_question
+    if (question.nom == "construit") {
 
-      console.log(req.body.nom + "hacher");
-      const pathJS = req.body.nom + "hacher";
+      console.log(req.body.nom + "construit");
+      const pathJS = req.body.nom + "construit";
       const id_question = stringToNumbers(pathJS);
+      console.log('id_question :>> ', id_question);
 
-      // CODE ICI complètes le if
       const queryLoad = "SELECT json FROM json_questions WHERE id_question = ?";
       details_js = await new Promise((resolve, reject) => {
         db.get(queryLoad, [id_question], (err, row) => {
@@ -181,9 +181,7 @@ app.post("/api/save_questionnaire", (req, res) => {
           }
         });
       });
-
     }
-
     console.log(details_js);
 
     // Convertir l'objet questionJSON en chaîne JSON
@@ -227,12 +225,13 @@ function isJSON(str) {  // vérifier que qu'une variable est au format JSON
 
 app.post("/api/save_question", (req, res) => {
   const questionJSON = req.body;
-  console.log(req.body);
   const questionId = stringToNumbers(questionJSON.questionnaireName + questionJSON.questionnaireType); // afin de différencier l'id de la question relier des autres questions
+  console.log('questionId :>> ', questionId);
   const db = new sqlite3.Database(databaseName);
 
   // Convertir l'objet questionJSON en chaîne JSON
   const jsonString = JSON.stringify(questionJSON, null, 2);
+  console.log('jsonString :>> ', jsonString);
 
   // Vérifier si les données sont au format JSON valide
   if (!isJSON(jsonString)) {

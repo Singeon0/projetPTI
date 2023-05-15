@@ -158,6 +158,34 @@ app.post("/api/save_questionnaire", (req, res) => {
       });
     }
 
+    else if (question.nom == "Hâchure fractions") {
+      // CODE ICI tu dois charger la question depuis la table json_question
+
+      console.log(req.body.nom + "hacher");
+      const pathJS = req.body.nom + "hacher";
+      const id_question = stringToNumbers(pathJS);
+      console.log('id_question :>> ', id_question);
+
+      // CODE ICI complètes le if
+      const queryLoad = "SELECT json FROM json_questions WHERE id_question = ?";
+      details_js = await new Promise((resolve, reject) => {
+        db.get(queryLoad, [id_question], (err, row) => {
+          if (err) {
+            console.error(err.message);
+            reject(err);
+          } else {
+            if (row) {
+              resolve(JSON.parse(row.json));
+            } else {
+              console.error("Question introuvable");
+              reject(new Error("Question introuvable"));
+            }
+          }
+        });
+      });
+    }
+
+
     else if (question.nom == "construit") {
 
       console.log(req.body.nom + "construit");
@@ -287,32 +315,6 @@ app.get("/api/get_question/:id", (req, res) => {
   // Fermer la connexion à la base de données
   db.close();
 });
-
-
-// créez une route pour gérer la requête POST et enregistrer le fichier JSON dans le dossier "JSON_question"
-app.post("/api/save_json", (req, res) => {
-  const questionJSON = req.body;
-  const questionId = Math.floor(Math.random() * (10 ** 6));
-  const fileName = `fichier_reponse_${questionId}.json`;
-  const filePath = path.join(__dirname, "public/templates_questions/relier/JSON_question", fileName);
-
-  fs.open(filePath, 'w', (err, file) => {
-    if (err) {
-      console.error(err.message);
-      res.status(500).send("Erreur lors de la création du fichier de question");
-    } else {
-      fs.writeFile(filePath, JSON.stringify(questionJSON, null, 2), (err) => {
-        if (err) {
-          console.error(err.message);
-          res.status(500).send("Erreur lors de la sauvegarde de la question");
-        } else {
-          res.status(200).send("Question sauvegardée");
-        }
-      });
-    }
-  });
-});
-
 
 //__________________________________________Partie étudiant_____________________________
 app.get('/api/get_questionnaire_id', (req, res) => {

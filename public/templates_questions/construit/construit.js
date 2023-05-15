@@ -165,7 +165,7 @@ function drawLine_construit(){
 function score_construit(){
     var temp9=0;
     var bilan1 = 0, bilan2 = 0;
-    if(document.getElementById("select_construit"+0).value == "Tête/yeux/bouche"){
+    if(document.getElementById("select_construit"+0).value == choix[0].split()[0]){
         sendData(1,"construit",15,3);
         ++bilan1;
     }else{  
@@ -179,7 +179,7 @@ function score_construit(){
     if(document.getElementById("select_construit"+0).value !== defaultValue){
     var temp1 = 0, temp2 = 0;
     for(let i = 1; i < 3; i++){
-        if(document.getElementById("select_construit"+i).value == "Squelette interne"){
+        if(document.getElementById("select_construit"+i).value == choix[1].split()[0]){
             temp1 = i;
         }else{
             if(document.getElementById("select_construit"+i).value == defaultValue){

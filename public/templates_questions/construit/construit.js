@@ -1,31 +1,34 @@
-// var options_construit = [["..............................","Tête","Yeux","Bouche","Tête/yeux/bouche"],[],[],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"],["..............................","Coquille","Corps avec anneaux","8 pattes","Plumes",'6 pattes et 2 antennes',"Poils"]];
-// options_construit[1] = ["..............................","Squelette interne","N'a pas de squelette interne","Squelette externe","N'a pas de squelette externe","Corps mou","N'a pas un corps mou"];
-// options_construit[2]= options_construit[1];
-
-// for(let i =0; i < 4; i++){
-//     options_construit[i+3] = ["..............................","Coquille","N'a pas de coquille","Corps avec anneaux","Corps sans anneaux","8 pattes","Pas 8 pattes","Plumes","Pas de plumes",'6 pattes et 2 antennes',"Pas 6 pattes et 2 antennes","Poils","Pas de poils"]
-// }
-var coordX_select_construit = [110, 460,460,840,840,840,840];
-var coordY_select_construit = [1014,864,1164,770,920,1120,1280];
+var coordX_select_construit = [110,460,460,840,840,840,840];
+var coordY_select_construit = [340,164,464,70,220,420,580];
 var position_construit = 1;
 var selected_construit = [false,false,false,false,false,false];
 var pair_construit = [0,2,1,4,3,6,5];
-function interval_construit(propositions){
-    let options_construit = [];
+let options_construit = [];
+const defaultValue = "............";
+let choix;
+ctx = document.getElementById('canvas').getContext("2d");
+canvRect = document.getElementById('canvas').getBoundingClientRect();   
+function interval_construit(prop){
+     choix = prop["choix"];
+    let m = 0;
     for(let j = 0; j < 3; j++){
-        for(let i =0; i < (2*j)+1; i++){
-            option_construit[j] = propositions[j].split(',');
+        for(let i =0; i < (2**j); i++){
+            function triAleatoire() {
+                return Math.random() - 0.5;
+              }
+            options_construit[m] = choix[j].split(',');
+            options_construit[m] = options_construit[m].sort(triAleatoire);
+            options_construit[m].unshift(defaultValue);
+            m++;
         } 
     }
-  
-    HEIGHT = 1500;
-    document.getElementById("canvas").style.height = "1500px";
-    document.getElementById("body").style.height= "1800px";
-    canv.height = HEIGHT;
-    canv.width = WIDTH;
+    console.log('options_construit :>> ', options_construit);
 drawBoard();
-drawImage_construit();
+//drawImage_construit();
 var temp = document.createElement("SELECT");
+temp.style.height ="80px";
+temp.style.width ="200px";
+temp.style.position ="absolute";
 temp.setAttribute("id", "select_construit0");
 temp.setAttribute("CLASS", "select_construit");
 for(let k = 0; k < options_construit[0].length; k++){
@@ -36,46 +39,42 @@ for(let k = 0; k < options_construit[0].length; k++){
     option.style.overflow = "visible";
     temp.add(option);
 }
-document.getElementById("canvas").appendChild(temp);
+document.getElementById("divCanvas").appendChild(temp);
 temp.style.left =coordX_select_construit[0]+"px";
 temp.style.top = coordY_select_construit[0]+"px";
 temp.addEventListener('change', select_construit);
 }
-function drawImage_construit(){
-    var formes_image = document.getElementById("construit_img");
-ctx.drawImage(formes_image, 25, 25, 1100, 1440);
-}
 function select_construit(){
-if(selected_construit[0] === false && document.getElementById("select_construit0").value !==".............................."){
+if(selected_construit[0] === false && document.getElementById("select_construit0").value !==defaultValue){
     createSelect_construit(1);
     createSelect_construit(2);
     selected_construit[0] = true;
 }
-if(selected_construit[1] === false && document.getElementById("select_construit1").value !==".............................." ){
+if(selected_construit[1] === false && document.getElementById("select_construit1").value !==defaultValue ){
     createSelect_construit(3);
     createSelect_construit(4);
     selected_construit[1] = true;
 }
-if(selected_construit[2] === false && document.getElementById("select_construit2").value !==".............................."){
+if(selected_construit[2] === false && document.getElementById("select_construit2").value !==defaultValue){
     createSelect_construit(5);
     createSelect_construit(6);
     selected_construit[2] = true;
 }
-if(selected_construit[1] === true && document.getElementById("select_construit1").value ==".............................."){
+if(selected_construit[1] === true && document.getElementById("select_construit1").value ==defaultValue){
     selected_construit[1] = false;
     selected_construit[3] = false;
     selected_construit[4] = false;
     document.getElementById("select_construit3").parentNode.removeChild(  document.getElementById("select_construit3"));
     document.getElementById("select_construit4").parentNode.removeChild(  document.getElementById("select_construit4"));
 }
-if(selected_construit[2] === true && document.getElementById("select_construit2").value ==".............................."){
+if(selected_construit[2] === true && document.getElementById("select_construit2").value ==defaultValue){
     selected_construit[2] = false;
     selected_construit[5] = false;
     selected_construit[6] = false;
     document.getElementById("select_construit5").parentNode.removeChild(  document.getElementById("select_construit5"));
     document.getElementById("select_construit6").parentNode.removeChild(  document.getElementById("select_construit6"));
 }
-if(selected_construit[0] === true && document.getElementById("select_construit0").value ==".............................."){
+if(selected_construit[0] === true && document.getElementById("select_construit0").value ==defaultValue){
     if(selected_construit[1] === true){
         selected_construit[1] = false;
         selected_construit[3] = false;
@@ -102,6 +101,10 @@ function createSelect_construit(i){
     var temp = document.createElement("SELECT");
     temp.setAttribute("id", "select_construit"+i);
     temp.setAttribute("CLASS", "select_construit");
+    temp.style.height ="80px";
+    temp.style.width ="200px";
+    temp.style.position ="absolute";
+    console.log('options_construit :>> ', options_construit);
     for(let k = 0; k < options_construit[i].length; k++){
         var option = document.createElement("option");
         option.text = options_construit[i][k]
@@ -109,7 +112,7 @@ function createSelect_construit(i){
         temp.add(option);
     }
     temp.addEventListener('change', ()=>{   if(document.getElementById("select_construit"+pair_construit[i]).value == document.getElementById("select_construit"+i).value){option_construit(pair_construit[i])}});
-    document.getElementById("canvas").appendChild(temp);
+    document.getElementById("divCanvas").appendChild(temp);
     temp.style.left =coordX_select_construit[i]+"px";
     temp.style.top = coordY_select_construit[i]+"px";
     temp.addEventListener('change', select_construit);
@@ -124,7 +127,7 @@ for(let k = 0; k < options_construit[i].length; k++){
 }
 function drawLine_construit(){
     drawBoard();
-    drawImage_construit();  
+    //drawImage_construit();  
  if(selected_construit[0] ===true){
     ctx.strokeStyle = "black";
     ctx.beginPath();
@@ -166,20 +169,20 @@ function score_construit(){
         sendData(1,"construit",15,3);
         ++bilan1;
     }else{  
-        if(document.getElementById("select_construit"+0).value == ".............................."){
+        if(document.getElementById("select_construit"+0).value == defaultValue){
             sendData(9,"construit",15,3);
             ++bilan2;
         }else{  
             sendData(0,"construit",15,3);
         }
     }
-    if(document.getElementById("select_construit"+0).value !== ".............................."){
+    if(document.getElementById("select_construit"+0).value !== defaultValue){
     var temp1 = 0, temp2 = 0;
     for(let i = 1; i < 3; i++){
         if(document.getElementById("select_construit"+i).value == "Squelette interne"){
             temp1 = i;
         }else{
-            if(document.getElementById("select_construit"+i).value == ".............................."){
+            if(document.getElementById("select_construit"+i).value == defaultValue){
                 ++temp2;
             }
         }
@@ -200,7 +203,7 @@ function score_construit(){
         if(document.getElementById("select_construit"+i).value == "Plumes"){
             temp3 = i;
         }else{
-            if(document.getElementById("select_construit"+i).value == ".............................."){
+            if(document.getElementById("select_construit"+i).value == defaultValue){
                 ++temp4;
             }
         }
@@ -248,13 +251,22 @@ function score_construit(){
     nettoyer_construit();
 
 }
+canvas.addEventListener('click',(e)=>{
+    console.log(canvas.offsetTop)
+    console.log("x : " + (e.clientX  -parseInt(canvas.offsetLeft)))
+    console.log("y : " + (e.clientY - parseInt(canvas.offsetTop)))
+})
 
-function nettoyer_construit(){
-drawBoard();
-for(let i =0; i < 7;i++){
-    if(document.getElementById("select_construit"+i) != undefined){
-        document.getElementById("select_construit"+i).parentNode.removeChild(document.getElementById("select_construit"+i));
-    }
+
+function drawBoard(){
+    ctx.lineWidth = 2;
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "#00abcc" 
+    let HEIGHT = document.getElementById("canvas").clientHeight;
+    let WIDTH = document.getElementById("canvas").clientWidth;
+    console.log('HEIGHT :>> ', HEIGHT);
+    console.log('WIDTH :>> ', WIDTH);
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.strokeRect(5, 5, WIDTH - 10, HEIGHT - 10);
 }
-reference_liste(16);
-}
+

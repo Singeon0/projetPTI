@@ -106,7 +106,6 @@
   function parseQuestionnaireName() {
     const urlParams = new URLSearchParams(window.location.search);
     questionnaireName = urlParams.get("questionnaireName");
-    console.log(questionnaireName)
     return questionnaireName;
 }
   function construitTemplate(){
@@ -123,7 +122,6 @@
       questionnaireName: nomQuestionnaire,
   };
   saveQuestionToServer(questionJSON)
-  console.log('questionJSON :>> ', questionJSON);
   window.history.back();
   }
 

@@ -157,3 +157,25 @@ nav a:hover {
   font-size: 16px;
 
 }
+
+#propositions-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#left-propositions, #right-propositions {
+  width: 20%; 
+}
+
+
+.proposition {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}

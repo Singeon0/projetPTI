@@ -17,7 +17,10 @@
         <label for="num-propositions">Nombre de propositions :</label>
         <input type="number" id="num-propositions" min="2" required>
 
-        <div id="propositions-container"></div>
+        <div id="propositions-container">
+            <div id="left-propositions"></div>
+            <div id="right-propositions"></div>
+        </div>
 
         <button type="submit" onclick="goBack()">Créer la question</button>
     </form>
@@ -36,19 +39,32 @@
         }
 
         document.getElementById("num-propositions").addEventListener("change", createPropositionsForm);
-        document.getElementById("create-question-form").addEventListener("submit", createQuestionJSON); function
-            createPropositionsForm() {
-                const numPropositions = document.getElementById("num-propositions").value; const
-                    container = document.getElementById("propositions-container"); container.innerHTML = ""; for (let i = 1; i
-                        <= numPropositions; i++) {
-                            const labelLeft = document.createElement("label"); labelLeft.innerHTML = `Proposition
-            gauche ${i} : `; const inputLeft = document.createElement("input"); inputLeft.type = "text";
-                inputLeft.id = `proposition-left-${i}`; const labelRight = document.createElement("label");
-                labelRight.innerHTML = `Proposition droite ${i} : `; const inputRight = document.createElement("input");
-                inputRight.type = "text"; inputRight.id = `proposition-right-${i}`; container.appendChild(labelLeft);
-                container.appendChild(inputLeft); container.appendChild(labelRight); container.appendChild(inputRight);
-            }
-        }
+        document.getElementById("create-question-form").addEventListener("submit", createQuestionJSON); 
+        
+        function createPropositionsForm() {
+    const numPropositions = document.getElementById("num-propositions").value;
+    const leftContainer = document.getElementById("left-propositions");
+    const rightContainer = document.getElementById("right-propositions");
+    leftContainer.innerHTML = "";
+    rightContainer.innerHTML = "";
+    for (let i = 1; i <= numPropositions; i++) {
+        const labelLeft = document.createElement("label");
+        labelLeft.innerHTML = `Proposition gauche ${i} : `;
+        const inputLeft = document.createElement("input");
+        inputLeft.type = "text";
+        inputLeft.id = `proposition-left-${i}`;
+        leftContainer.appendChild(labelLeft);
+        leftContainer.appendChild(inputLeft);
+
+        const labelRight = document.createElement("label");
+        labelRight.innerHTML = `Proposition droite ${i} : `;
+        const inputRight = document.createElement("input");
+        inputRight.type = "text";
+        inputRight.id = `proposition-right-${i}`;
+        rightContainer.appendChild(labelRight);
+        rightContainer.appendChild(inputRight);
+    }
+}
 
         function saveQuestionToServer(questionJSON) {
             console.log(questionJSON);

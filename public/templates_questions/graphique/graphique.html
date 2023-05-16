@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connecter les points</title>
+    <link rel="stylesheet" href="../../profs/style_prof.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <nav>
+        <img  src="../../logoPTI.png" alt="logo"> 
+        <ul>
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+      <title>Liste des questionnaires créés</title>
+      
+      <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+          }
+          
+          .container {
+            position: absolute;
+            top: 45%; /* Positionner à 70% de la hauteur verticale */
+            left: 50%; /* Centrer horizontalement */
+            transform: translate(-50%, -50%);
+          }
+          
+          .canvas-container {
+            max-width: 400px;
+            margin: 20px;
+          }
+          
+      </style>
+</head>
+<body>
+    <h1 id="titre">Score sous forme de graphe radar</h1>
+    <div class="container">
+        <div class="canvas-container">
+          <canvas id="radarChart"></canvas>
+        </div>
+      </div>
+        
+    <script src="script.js"></script>
+</body>
+</html>
+<script> 
+window.onload = () => {
+    const propositions = JSON.parse(localStorage.getItem("infos_question"));
+    console.log(propositions);
+    localStorage.removeItem("infos_question"); // Supprimer l'élément après l'avoir récupéré
+        interval_construit(propositions)
+}
+
+</script>

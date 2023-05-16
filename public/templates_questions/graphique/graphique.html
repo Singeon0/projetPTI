@@ -27,11 +27,15 @@
             top: 45%; /* Positionner à 70% de la hauteur verticale */
             left: 50%; /* Centrer horizontalement */
             transform: translate(-50%, -50%);
+            width: 150%; /* Ajuster la largeur à 150% */
+            height: 150%; /* Ajuster la hauteur à 150% */
           }
           
           .canvas-container {
             max-width: 400px;
             margin: 20px;
+            width: 100%; /* Ajuster la largeur à 100% */
+            height: 100%; /* Ajuster la hauteur à 100% */
           }
           
       </style>
@@ -48,11 +52,32 @@
 </body>
 </html>
 <script> 
+    async function getScore(nomPrenom, questionnaireId) {
+        try {
+          const response = await fetch(`/api/get_score?nomPrenom=${nomPrenom}&questionnaireId=${questionnaireId}`);
+          if (!response.ok) {
+            throw new Error(`Erreur HTTP ${response.status}`);
+          }
+          const data = await response.json();
+          return data.questionnaire_id;
+        } catch (error) {
+          console.error("Erreur lors de la récupération de l'ID du questionnaire:", error);
+        }
+      }
+const propositions = JSON.parse(localStorage.getItem("'questions'"));
+const nomPrenom = propositions.nomPrenom;
+const questionnaireId = propositions.questionnaireId;
+console.log('nomPrenom :>> ', nomPrenom);
+console.log('questionnaireId :>> ', questionnaireId);
+const score =  getScore(nomPrenom,questionnaireId);
+
 window.onload = () => {
-    const propositions = JSON.parse(localStorage.getItem("infos_question"));
-    console.log(propositions);
-    localStorage.removeItem("infos_question"); // Supprimer l'élément après l'avoir récupéré
-        interval_construit(propositions)
+  
+   if(score){
+    loadChart()
+   }
+   
+  
 }
 
 </script>

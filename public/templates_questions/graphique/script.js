@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+function loadChart(){document.addEventListener('DOMContentLoaded', function() {
     // Données d'entrée pour le graphe radar
     var data = {
       labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
@@ -35,4 +35,4 @@ document.addEventListener('DOMContentLoaded', function() {
       data: data,
       options: options
     });
-  });
+  });}

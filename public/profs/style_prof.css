@@ -77,6 +77,11 @@ button:hover {
   align-items: center;
   height: 100vh;
 }
+.container_illu {
+
+    display: flex;
+  
+}
 
 .form-container {
   display: flex;
@@ -178,4 +183,18 @@ nav a:hover {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+}
+.column {
+  flex: 1;
+  padding: 100px;
+ width: 500px;
+ justify-content: center;
+ align-items: center;
+}
+.column-center {
+  
+  padding: 100px;
+ width: 700px;
+ justify-content: center;
+ align-items: center;
 }

@@ -449,6 +449,29 @@ app.get('/api/get_questions', (req, res) => {
   db.close();
 });
 
+app.get('/api/get_score/:nomPrenom/:questionnaireId', (req, res) => {
+  const nomPrenom = req.params.nomPrenom;
+  const questionnaireId = req.params.questionnaireId;
+  const db = new sqlite3.Database(databaseName);
+  const nomPrenom_idQuestionnaire = nomPrenom + "_"+questionnaireId;
+
+  const query = `
+    SELECT *
+    FROM notes
+    WHERE nomPrenom_idQuestionnaire = ?;
+  `;
+
+  db.all(query, [nomPrenom_idQuestionnaire], (err, rows) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la récupération des questions");
+    } else {
+      res.json({ notes: rows });
+    }
+  });
+
+  db.close();
+});
 
 app.post('/api/create_notes_eleves_entry', (req, res) => {
   const { nomPrenom, questionnaireId } = req.body;

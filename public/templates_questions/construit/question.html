@@ -37,7 +37,7 @@ window.onload = () => {
   const currentQuestionIndex = parseInt(localStorage.getItem('currentQuestionIndex'));
   const question = questions[currentQuestionIndex];
   const propositions = JSON.parse(question.infos_question);
-        interval_construit(propositions)
+        interval_construit(propositions, currentQuestionIndex, question)
 }
 
 </script>

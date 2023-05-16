@@ -1,10 +1,12 @@
-function loadChart(){document.addEventListener('DOMContentLoaded', function() {
+function loadChart(scores, titres){
+    console.log('titres :>> ', titres);
+    console.log('scores :>> ', scores);
     // Données d'entrée pour le graphe radar
     var data = {
-      labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
+      labels: titres,
       datasets: [{
         label: 'Valeurs',
-        data: [0.8, 0.6, 0.4, 0.2],
+        data: scores,
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         borderColor: 'rgba(255, 99, 132, 1)',
         pointBackgroundColor: 'rgba(255, 99, 132, 1)',
@@ -35,4 +37,4 @@ function loadChart(){document.addEventListener('DOMContentLoaded', function() {
       data: data,
       options: options
     });
-  });}
+  }

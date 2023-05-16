@@ -5,21 +5,13 @@
     <title>Connecter les points</title>
     <link rel="stylesheet" href="../../profs/style_prof.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <nav>
-        <img  src="../../logoPTI.png" alt="logo"> 
-        <ul>
-          <li><a href="../index.html">Accueil</a></li>
-          <li><a href="#">À propos</a></li>
-          <li><a href="#">Services</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </nav>
-      <title>Liste des questionnaires créés</title>
+   
       
       <style>
         body, html {
             margin: 0;
             padding: 0;
+            overflow: hidden;
           }
           
           .container {
@@ -41,6 +33,16 @@
       </style>
 </head>
 <body>
+    <nav>
+        <img  src="../../logoPTI.png" alt="logo"> 
+        <ul>
+          <li><a href="../../index.html">Accueil</a></li>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+      <title>Liste des questionnaires créés</title>
     <h1 id="titre">Score sous forme de graphe radar</h1>
     <div class="container">
         <div class="canvas-container">
@@ -59,26 +61,35 @@
             throw new Error(`Erreur HTTP ${response.status}`);
           }
           const data = await response.json();
-          return data.questionnaire_id;
+          return data.notes;
         } catch (error) {
-          console.error("Erreur lors de la récupération de l'ID du questionnaire:", error);
+          console.error("Erreur lors de la récupération des notes", error);
         }
       }
-      const questions = JSON.parse(localStorage.getItem('questions'));
-      const currentQuestionIndex = 0;
-      const question = questions[currentQuestionIndex];
-      const propositions = JSON.parse(question.infos_question);
-      const nomPrenom = propositions.nomPrenom;
-      const questionnaireId = propositions.questionnaireId;
-const score =  getScore(nomPrenom,questionnaireId);
-
+    async function load(){
+        const questions = JSON.parse(localStorage.getItem('questions'));
+        const currentQuestionIndex = 0;
+        const question = questions[currentQuestionIndex];
+        const propositions = JSON.parse(question.infos_question);
+        const nomPrenom = propositions.nomPrenom;
+        const questionnaireId = propositions.questionnaireId;
+        const score =  await getScore(nomPrenom,questionnaireId);
+        console.log('score :>> ', score);
+        let scores = [], titres = [];
+        if(score){
+         for(let i =0; i < score.length; i++){
+             scores[i] = score[i].note_obtenu;
+             titres[i] = score[i].nom_question;
+         }
+        loadChart(scores, titres)
+    }
+      
+    }
 window.onload = () => {
-  
-   if(score){
-    loadChart()
+ load()
    }
    
   
-}
+
 
 </script>

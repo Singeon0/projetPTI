@@ -9,10 +9,14 @@ let choix;
 let bonChoix;
 let mauvaisChoix;
 let animal;
+let currentQuestionIndex;
+let questions;
 ctx = document.getElementById('canvas').getContext("2d");
 canvRect = document.getElementById('canvas').getBoundingClientRect();  
 let props; 
-function interval_construit(prop){
+function interval_construit(prop, currentQuestion, qu){
+    questions = qu;
+    currentQuestionIndex = currentQuestion;
     props = prop;
      bonChoix = prop["bonChoix"];
      mauvaisChoix = prop["mauvaisChoix"];

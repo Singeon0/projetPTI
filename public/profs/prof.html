@@ -34,7 +34,7 @@
     }
 
     function loadQuestionnaires() {
-      const idProf = document.getElementById("idProf").value;
+      
       fetch(`/api/questionnaires/${idProf}`)
         .then(response => response.json())
         .then(data => {

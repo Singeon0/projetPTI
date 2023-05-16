@@ -54,7 +54,7 @@
 <script> 
     async function getScore(nomPrenom, questionnaireId) {
         try {
-          const response = await fetch(`/api/get_score?nomPrenom=${nomPrenom}&questionnaireId=${questionnaireId}`);
+          const response = await fetch(`/api/get_score/${nomPrenom}/${questionnaireId}`);
           if (!response.ok) {
             throw new Error(`Erreur HTTP ${response.status}`);
           }

@@ -193,7 +193,7 @@ function score_construit(){
         ++bilan1;
     }else{  
         if(document.getElementById("select_construit"+0).value == defaultValue){
-            score[0] = 9;
+            score[0] = 0;
             ++bilan2;
         }else{  
             score[0] = 0;
@@ -206,14 +206,14 @@ function score_construit(){
         ++bilan1;
     }else{  
         if(document.getElementById("select_construit"+i).value == defaultValue){
-            score[1][i-1] = 9;
+            score[1][i-1] = 0;
             ++bilan2;
         }else{  
             score[1][i-1] = 0;
         }
     }
  }
-score[2] = 9;
+score[2] = 0;
 if(score[1][0] == 1 && score[1][1] == 1){
     score[2] = 1;
 }
@@ -226,13 +226,13 @@ if(score[1][0] == 0 && score[1][1] == 0){
         ++bilan1;
     }else{  
         if(document.getElementById("select_construit"+i).value == defaultValue){
-            score[3][i-3] = 9;
+            score[3][i-3] = 0;
             ++bilan2;
         }else{  
             score[3][i-3] = 0;
         }
  }
- score[4] = 9;
+ score[4] = 0;
  if(score[3][0] == 1 && score[3][1] == 1  && score[3][2] == 1  && score[3][3] == 1){
      score[4] = 1;
  }
@@ -244,6 +244,8 @@ if(score[1][0] == 0 && score[1][1] == 0){
  }
 
  }
+ score = score[0] + score[2] + score[4] + score[5];
+ score = score/4;
  saveNoteToServer(score, props);
  nextQuestion()
 }

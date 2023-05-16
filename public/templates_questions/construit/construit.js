@@ -6,17 +6,29 @@ var pair_construit = [0,2,1,4,3,6,5];
 let options_construit = [];
 const defaultValue = "............";
 let choix;
+let bonChoix;
+let mauvaisChoix;
+let animal;
 ctx = document.getElementById('canvas').getContext("2d");
 canvRect = document.getElementById('canvas').getBoundingClientRect();   
 function interval_construit(prop){
-     choix = prop["choix"];
+     bonChoix = prop["bonChoix"];
+     mauvaisChoix = prop["mauvaisChoix"];
+     choix = [];
+     animal = prop["animal"];
+     document.getElementById("titre").value = document.getElementById("titre").value + " "+animal;
+     for(let i = 0; i < 3; i++){
+        choix[i] = bonChoix[i] +','+mauvaisChoix[i];
+        choix[i] = choix[i].split(',');
+        bonChoix[i] = bonChoix[i].split(',');
+        mauvaisChoix[i] = mauvaisChoix[i].split(',');
+     }
     let m = 0;
     for(let j = 0; j < 3; j++){
         for(let i =0; i < (2**j); i++){
             function triAleatoire() {
                 return Math.random() - 0.5;
               }
-            options_construit[m] = choix[j].split(',');
             options_construit[m] = options_construit[m].sort(triAleatoire);
             options_construit[m].unshift(defaultValue);
             m++;
@@ -165,90 +177,64 @@ function drawLine_construit(){
 function score_construit(){
     var temp9=0;
     var bilan1 = 0, bilan2 = 0;
-    if(document.getElementById("select_construit"+0).value == choix[0].split()[0]){
-        sendData(1,"construit",15,3);
+    let score = [,[],,[]]
+    //score premier niveau
+    if(document.getElementById("select_construit"+0).value == choix[0][0]){
+        score[0] = 1;
         ++bilan1;
     }else{  
         if(document.getElementById("select_construit"+0).value == defaultValue){
-            sendData(9,"construit",15,3);
+            score[0] = 9;
             ++bilan2;
         }else{  
-            sendData(0,"construit",15,3);
+            score[0] = 0;
         }
     }
-    if(document.getElementById("select_construit"+0).value !== defaultValue){
-    var temp1 = 0, temp2 = 0;
-    for(let i = 1; i < 3; i++){
-        if(document.getElementById("select_construit"+i).value == choix[1].split()[0]){
-            temp1 = i;
-        }else{
-            if(document.getElementById("select_construit"+i).value == defaultValue){
-                ++temp2;
-            }
-        }
-    }
-    if(temp1 != 0 ){
-        sendData(1,"construit",15,5);
+ // score second niveau
+ for(let i =1; i<3;i++){
+    if( bonChoix[1].includes(document.getElementById("select_construit"+i).value)){
+        score[1][i] = 1;
         ++bilan1;
+    }else{  
+        if(document.getElementById("select_construit"+i).value == defaultValue){
+            score[1][i] = 9;
+            ++bilan2;
         }else{  
-            if(temp2 == 2){
-                sendData(9,"construit",15,5);
-            }else{  
-                sendData(0,"construit",15,5);
-            }
-        }
-        if(temp2 != 2 && temp1 != 0){
-        var temp3= 0, temp4 = 0;
-     for(let i = 1+2*temp1; i <3+2*temp1;i++){
-        if(document.getElementById("select_construit"+i).value == "Plumes"){
-            temp3 = i;
-        }else{
-            if(document.getElementById("select_construit"+i).value == defaultValue){
-                ++temp4;
-            }
+            score[1][i] = 0;
         }
     }
-    if(temp3 != 0 ){
-        sendData(1,"construit",15,7);
+ }
+score[2] = 9;
+if(score[1][0] == 1 && score[1][1] == 1){
+    score[2] = 1;
+}
+if(score[1][0] == 0 && score[1][1] == 0){
+    score[2] = 0;
+}
+ for(let i =3; i<7;i++){
+    if( bonChoix[1].includes(document.getElementById("select_construit"+i).value)){
+        score[3][i] = 1;
+        ++bilan1;
+    }else{  
+        if(document.getElementById("select_construit"+i).value == defaultValue){
+            score[3][i] = 9;
+            ++bilan2;
         }else{  
-            if(temp4 == 2){
-                sendData(9,"construit",15,7);
-                temp9 = 1;
-            }else{  
-                sendData(0,"construit",15,7);
-            }
+            score[3][i] = 0;
         }
-    }else{ sendData(9,"construit",15,7);temp9 = 1}
-    }else{sendData(9,"construit",15,5); sendData(9,"construit",15,7);temp9 = 1}
-    if(temp9 == 1){
-        sendData(9,"construit",15,1);
-    }else{
-        if(document.getElementById("select_construit"+pair_construit[temp1]).value == "N'a pas de squelette interne") {
-            if(document.getElementById("select_construit"+pair_construit[temp3]).value == "Pas de plumes"){
-                sendData(1,"construit",15,1);
-                ++bilan1;
-            }else{
-                sendData(0,"construit",15,1);
-            }
-        }else{
-            sendData(0,"construit",15,1);
-        }
-    }
-    if(bilan1 == 3){
-        sendData(1,"construit",15,9);
-    }else{
-        if(bilan2 ==1){
-            sendData(9,"construit",15,9);
-        }else{
-            sendData(0,"construit",15,9);
-        }
-    }
-    //item de précision, ignoré
-    sendData(9,"construit",15,2);
-    sendData(9,"construit",15,4);
-    sendData(9,"construit",15,6);
-    sendData(9,"construit",15,8);
-    nettoyer_construit();
+ }
+ score[4] = 9;
+ if(score[3][0] == 1 && score[3][1] == 1  && score[3][2] == 1  && score[3][3] == 1){
+     score[4] = 1;
+ }
+ if(score[3][0] == 0 && score[3][1] == 0  && score[3][2] == 0  && score[3][3] == 0){
+     score[4] = 0;
+ }
+ if (score[0] ==1 && score[2] == 1 && score[4] == 1){
+    score[5] == 1;
+ }
+
+ }
 
 }
 canvas.addEventListener('click',(e)=>{

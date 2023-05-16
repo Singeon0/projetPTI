@@ -13,309 +13,303 @@
     <h2 id="questionnaireName"> </h2>
     <p id="enonce"> </p>
     <p>Cliquez sur le point pour modifier le coloriage et recliquez pour valider</p>
-    
+
     <canvas id="canvas" width="1800" height="800"></canvas>
     <button id="validateButton" class="save-button">Valider l'appariement</button>
     <img src="/templates_questions/images/hachure1-rect.PNG" alt="image" id="hachure1_img_rect" style="display:none">
-    <img src="/templates_questions/images/hachure1-cercle.PNG" alt="image" id="hachure1_img_cercle" style="display:none">
+    <img src="/templates_questions/images/hachure1-cercle.PNG" alt="image" id="hachure1_img_cercle"
+        style="display:none">
     <img src="/templates_questions/images/latte.jpg" alt="image" id="latte_hachure_img" style="display:none">
 
     <script>
         
+        // Ajoutez ces lignes pour récupérer les informations de la question à partir du localStorage
+        const questions = JSON.parse(localStorage.getItem('questions'));
+        const currentQuestionIndex = parseInt(localStorage.getItem('currentQuestionIndex'));
+        const question = questions[currentQuestionIndex];
+        const propositions = JSON.parse(question.infos_question);
+
+        
         let score = 0; //score obtenu -> permet d'accèder au contenu hors du main
-       
-        let fraction; 
-        
-      
-        
+
+        let fraction;
 
         function updateTitle(title) {
             document.getElementById("questionnaireName").textContent = title;
         }
 
-              // Récupérer le contexte du canvas
-              let canvas = document.getElementById("canvas");
-              let ctx = canvas.getContext("2d");
-              let selectX_rect = 35, selectY_rect = 400;
-              let selectX_rond= 500,selectY_rond=100;
-                var tolerance_hachure1 = 500;
-              let startAngle=0*Math.PI;
-              let endAngle=0*Math.PI;
-             
+        // Récupérer le contexte du canvas
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let selectX_rect = 35, selectY_rect = 400;
+        let selectX_rond = 500, selectY_rond = 100;
+        var tolerance_hachure1 = 500;
+        let startAngle = 0 * Math.PI;
+        let endAngle = 0 * Math.PI;
 
-            
-        function main(propositions) {
-          
+        window.onload = main;
 
-                // Mettre à jour le titre <h1> avec la valeur de propositions.questionnaireName
-                updateTitle(propositions.questionnaireName);
-               
-              
-
-                // Définir les paramètres des points
-                let radius = 10; // rayon des points
-                let gap = 30; // espace entre les points
-                let right = []; // tableau des points à droite
-                let selected = null; // point sélectionné
-                const decalage =200;
-             
-                const fraction_numerateur=  propositions.fraction_numerateur;
-                const fraction_denominateur = propositions.fraction_denominateur;
-                fraction=fraction_numerateur/fraction_denominateur;
-            
-                // mise à jour de l'énoncé 
-                document.getElementById("enonce").textContent = "Coloriez la forme suivante pour représenter la fraction "+ fraction_numerateur+"/"+fraction_denominateur
+        function main() {
 
 
-              canvas.addEventListener('click',(e)=>{
+            // Mettre à jour le titre <h1> avec la valeur de propositions.questionnaireName
+            updateTitle(propositions.questionnaireName);
+
+
+            // Définir les paramètres des points
+            let radius = 10; // rayon des points
+            let gap = 30; // espace entre les points
+            let right = []; // tableau des points à droite
+            let selected = null; // point sélectionné
+            const decalage = 200;
+
+            const fraction_numerateur = propositions.fraction_numerateur;
+            const fraction_denominateur = propositions.fraction_denominateur;
+            fraction = fraction_numerateur / fraction_denominateur;
+
+            // mise à jour de l'énoncé 
+            document.getElementById("enonce").textContent = "Coloriez la forme suivante pour représenter la fraction " + fraction_numerateur + "/" + fraction_denominateur
+
+
+            canvas.addEventListener('click', (e) => {
                 console.log(canvas.offsetTop)
-                console.log("x : " + (e.clientX  -parseInt(canvas.offsetLeft)))
+                console.log("x : " + (e.clientX - parseInt(canvas.offsetLeft)))
                 console.log("y : " + (e.clientY - parseInt(canvas.offsetTop)))
             })
-       
-             
-                if(propositions.forme=="rect"){
-                    interval_hachure1()
-                    //  drawBoard();
-                    drawImage_hachure1();
-                    initialisation_hachure1();
-                }
-                if(propositions.forme=="cercle"){
-                    interval_hachure2()
-                    //  drawBoard();
-                    drawImage_hachure2();
-                    initialisation_hachure2();
-                }
-               
-
-                document.getElementById("validateButton").addEventListener("click", saveNoteToServer(score,propositions));
-        
 
 
-                // fonction rectangle : 
-                function interval_hachure1(){
-                    HEIGHT = 650;
-                    document.getElementById("canvas").style.height = "650px";
-                    document.getElementById("canvas").addEventListener("click", select_hachure1);
-                
+            if (propositions.forme == "rect") {
+                interval_hachure1()
+                //  drawBoard();
+                drawImage_hachure1();
+                initialisation_hachure1();
+            }
+            if (propositions.forme == "cercle") {
+                interval_hachure2()
+                //  drawBoard();
+                drawImage_hachure2();
+                initialisation_hachure2();
+            }
 
-              
-                }
-                function drawImage_hachure1(){
-                    var temp_image = document.getElementById("hachure1_img_rect");
-                    ctx.drawImage(temp_image, 5, 40, 1180, 500);
-                    var temp_image = document.getElementById("latte_hachure_img");
-                    ctx.drawImage(temp_image, 35, 550,1173,150);
-                }
-                function initialisation_hachure1(){
-                    ctx.beginPath();
-                    ctx.arc(50, 500, 20, 0, 200, false);
-                    ctx.fillStyle = "black";
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(50, 500, 17, 0, 200, false);
-                    ctx.fillStyle = "white";
-                    ctx.fill();
-                }
-                function select_hachure1(e){
-                  
-                    var x = parseInt(e.clientX -document.getElementById("canvas").offsetLeft);
-                    var y = parseInt(e.clientY - document.getElementById("canvas").offsetTop);
-                    console.log(x)
-                    console.log(y)
-                   
-                    if(x > selectX_rect -tolerance_hachure1 && x < selectX_rect + tolerance_hachure1){
-                        if(y > selectY_rect - tolerance_hachure1 && y < selectY_rect + tolerance_hachure1){
-                            console.log("bite")
-                            document.getElementById("canvas").addEventListener("mousemove", hachure1_rect)
-                            document.getElementById("canvas").removeEventListener("click", select_hachure1);
-                            document.getElementById("canvas").addEventListener("click", hachure1_rect_stop);
-                            score_hachure1()
-                            console.log(score)
-                        }}
-                      
-                }
-                function hachure1_rect(e){
-                
-                    
-                    mouseX = parseInt(e.pageX - document.getElementById("canvas").offsetLeft)-35;
-                    mouseY = parseInt(e.pageY - document.getElementById("canvas").offsetTop)-50;
-                    if(e !== false){
-                        selectX_rect = mouseX;
-                        if(selectX_rect < 52){
-                            selectX_rect = 52;
-                        }
-                        if(selectX_rect > 1170){
-                            selectX_rect = 1170;
-                        }   
-                        drawImage_hachure1();
-                        
-                    }
-                    ctx.globalAlpha = 0.5;
-                    ctx.beginPath();
-                    ctx.fillStyle = "blue";
-                    ctx.fillRect(52, 85, selectX_rect-52,423)
-                    ctx.globalAlpha = 1;
-                    ctx.beginPath();
-                    ctx.arc(selectX_rect, selectY_rect, 20, 0, 200, false);
-                    ctx.fillStyle = "black";
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(selectX_rect, selectY_rect, 17, 0, 200, false);
-                    ctx.fillStyle = "white";
-                    ctx.fill();
 
-                }
-                function score_hachure1(){
-                tol= 50
-                if(selectX_rect > 52+(1120*fraction)-tol && selectX_rect <52+(1120*fraction)+tol){
-                    score=1.0
-                }else{
-                    score=0.0
-                }
-               
-                }
-                function hachure1_rect_stop(){
-                    document.getElementById("canvas").removeEventListener("mousemove", hachure1_rect)
-                document.getElementById("canvas").removeEventListener("click", hachure1_rect_stop);
+            // fonction rectangle : 
+            function interval_hachure1() {
+                HEIGHT = 650;
+                document.getElementById("canvas").style.height = "650px";
                 document.getElementById("canvas").addEventListener("click", select_hachure1);
-                    // mise à jour du score 
-                    score_hachure1()
-                    console.log(score)
-                }
-                function nettoyer_hachure1(){
-                  
-                    document.getElementById("canvas").removeEventListener("mousemove", hachure1_rect)
-                    document.getElementById("canvas").removeEventListener("click", hachure1_rect_stop);
-                    
-                    document.getElementById("canvas").removeEventListener("click", select_hachure1);
-                    drawBoard();
-                    reference_liste(2);
-                }
 
 
-                // fonction cercle 
-                function interval_hachure2(){
-                    HEIGHT = 650;
-                    document.getElementById("canvas").style.height = "650px";
-                    document.getElementById("canvas").addEventListener("click", select_hachure2);
-                
-
-              
-                }
-                function hachure2_rond(e) {
-
-                    var centerx = 755;
-                    var centery = 347;
-                  
-                    mouseX = parseInt(e.pageX - document.getElementById("canvas").offsetLeft+200);
-                    mouseY = parseInt(e.pageY - document.getElementById("canvas").offsetTop);
-                    if(e !==false){
-                        rads_rond = Math.atan2(mouseY - centery, mouseX - centerx);
-                        var x = 220 * Math.cos(rads_rond) + centerx;
-                        var y = 220* Math.sin(rads_rond) + centery;
-                        selectX_rond = x;
-                        selectY_rond = y;
-                        drawImage_hachure2();
-                       
-                    }
-                    
-                    endAngle=startAngle+rads_rond;
-                    var radius = 222;
-                    var colors = "blue";
-                    ctx.globalAlpha = 0.5;
-                    ctx.beginPath();
-                    ctx.moveTo(centerx,centery);
-                    ctx.arc(centerx,centery,radius,startAngle,endAngle);
-                    ctx.closePath();
-                    ctx.fillStyle=colors;
-                    ctx.fill();
-                    ctx.stroke();
-                    ctx.globalAlpha = 1;
-                    ctx.beginPath();
-                    ctx.arc(selectX_rond, selectY_rond, 20, 0, 200, false);
-                    ctx.fillStyle = "black";
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(selectX_rond, selectY_rond, 17, 0, 200, false);
-                    ctx.fillStyle = "white";
-                    ctx.fill();
-                    }
-                function hachure2_rond_stop(){
-                    document.getElementById("canvas").removeEventListener("mousemove", hachure2_rond)
-                    document.getElementById("canvas").removeEventListener("click", hachure2_rond_stop);
-                    document.getElementById("canvas").addEventListener("click", select_hachure2);
-                    }
-                function drawImage_hachure2(){
-                    var temp_image = document.getElementById("hachure1_img_cercle");
-                    ctx.drawImage(temp_image, 500, 100, 500, 500);
-                    
-                }
-                function initialisation_hachure2(){
-                    ctx.beginPath();
-                    ctx.arc(980, 355, 20, 0, 200, false);
-                    ctx.fillStyle = "black";
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.arc(980, 355, 17, 0, 200, false);
-                    ctx.fillStyle = "white";
-                    ctx.fill();
-                }
-                function select_hachure2(e){
-                  
-                  var x = parseInt(e.clientX -document.getElementById("canvas").offsetLeft);
-                  var y = parseInt(e.clientY - document.getElementById("canvas").offsetTop);
-                  console.log(x)
-                  console.log(y)
-                 
-                  if(x > selectX_rond -tolerance_hachure1 && x < selectX_rond + tolerance_hachure1){
-                      if(y > selectY_rond - tolerance_hachure1 && y < selectY_rond + tolerance_hachure1){
-                          console.log("bite")
-                          document.getElementById("canvas").addEventListener("mousemove", hachure2_rond)
-                          document.getElementById("canvas").removeEventListener("click", select_hachure2);
-                          document.getElementById("canvas").addEventListener("click", hachure2_rond_stop);
-                          score_hachure2()
-                          console.log(score)
-                      }}
-                    
-              }
-              function score_hachure2(){
-               
-                tol= Math.PI/18;
-                anglesolu=fraction*Math.PI*2
-                console.log(anglesolu)
-                console.log(endAngle)
-                if(endAngle > anglesolu -tol  && endAngle < anglesolu + tol ){
-                    score=1.0
-                }else{
-                    score=0.0
-                }
-               
-                }
-                function nettoyer_hachure2(){
-                  
-                  document.getElementById("canvas").removeEventListener("mousemove", hachure2_rond)
-                  document.getElementById("canvas").removeEventListener("click", hachure2_rond_stop);
-                  
-                  document.getElementById("canvas").removeEventListener("click", select_hachure2);
-                  drawBoard();
-                  reference_liste(2);
-              }
-
-
-                
-              
-                
-                
-
-                
 
             }
-               
+            function drawImage_hachure1() {
+                var temp_image = document.getElementById("hachure1_img_rect");
+                ctx.drawImage(temp_image, 5, 40, 1180, 500);
+                var temp_image = document.getElementById("latte_hachure_img");
+                ctx.drawImage(temp_image, 35, 550, 1173, 150);
+            }
+            function initialisation_hachure1() {
+                ctx.beginPath();
+                ctx.arc(50, 500, 20, 0, 200, false);
+                ctx.fillStyle = "black";
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(50, 500, 17, 0, 200, false);
+                ctx.fillStyle = "white";
+                ctx.fill();
+            }
+            function select_hachure1(e) {
 
-               
+                var x = parseInt(e.clientX - document.getElementById("canvas").offsetLeft);
+                var y = parseInt(e.clientY - document.getElementById("canvas").offsetTop);
+                console.log(x)
+                console.log(y)
 
-            function saveNoteToServer(note, propositions) {
+                if (x > selectX_rect - tolerance_hachure1 && x < selectX_rect + tolerance_hachure1) {
+                    if (y > selectY_rect - tolerance_hachure1 && y < selectY_rect + tolerance_hachure1) {
+                        console.log("bite")
+                        document.getElementById("canvas").addEventListener("mousemove", hachure1_rect)
+                        document.getElementById("canvas").removeEventListener("click", select_hachure1);
+                        document.getElementById("canvas").addEventListener("click", hachure1_rect_stop);
+                        score_hachure1()
+                        console.log(score)
+                    }
+                }
+
+            }
+            function hachure1_rect(e) {
+
+
+                mouseX = parseInt(e.pageX - document.getElementById("canvas").offsetLeft) - 35;
+                mouseY = parseInt(e.pageY - document.getElementById("canvas").offsetTop) - 50;
+                if (e !== false) {
+                    selectX_rect = mouseX;
+                    if (selectX_rect < 52) {
+                        selectX_rect = 52;
+                    }
+                    if (selectX_rect > 1170) {
+                        selectX_rect = 1170;
+                    }
+                    drawImage_hachure1();
+
+                }
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                ctx.fillStyle = "blue";
+                ctx.fillRect(52, 85, selectX_rect - 52, 423)
+                ctx.globalAlpha = 1;
+                ctx.beginPath();
+                ctx.arc(selectX_rect, selectY_rect, 20, 0, 200, false);
+                ctx.fillStyle = "black";
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(selectX_rect, selectY_rect, 17, 0, 200, false);
+                ctx.fillStyle = "white";
+                ctx.fill();
+
+            }
+            function score_hachure1() {
+                tol = 50
+                if (selectX_rect > 52 + (1120 * fraction) - tol && selectX_rect < 52 + (1120 * fraction) + tol) {
+                    score = 1.0
+                } else {
+                    score = 0.0
+                }
+
+            }
+            function hachure1_rect_stop() {
+                document.getElementById("canvas").removeEventListener("mousemove", hachure1_rect)
+                document.getElementById("canvas").removeEventListener("click", hachure1_rect_stop);
+                document.getElementById("canvas").addEventListener("click", select_hachure1);
+                // mise à jour du score 
+                score_hachure1()
+                console.log(score)
+            }
+            function nettoyer_hachure1() {
+
+                document.getElementById("canvas").removeEventListener("mousemove", hachure1_rect)
+                document.getElementById("canvas").removeEventListener("click", hachure1_rect_stop);
+
+                document.getElementById("canvas").removeEventListener("click", select_hachure1);
+                drawBoard();
+                reference_liste(2);
+            }
+
+
+            // fonction cercle 
+            function interval_hachure2() {
+                HEIGHT = 650;
+                document.getElementById("canvas").style.height = "650px";
+                document.getElementById("canvas").addEventListener("click", select_hachure2);
+
+
+
+            }
+            function hachure2_rond(e) {
+
+                var centerx = 755;
+                var centery = 347;
+
+                mouseX = parseInt(e.pageX - document.getElementById("canvas").offsetLeft + 200);
+                mouseY = parseInt(e.pageY - document.getElementById("canvas").offsetTop);
+                if (e !== false) {
+                    rads_rond = Math.atan2(mouseY - centery, mouseX - centerx);
+                    var x = 220 * Math.cos(rads_rond) + centerx;
+                    var y = 220 * Math.sin(rads_rond) + centery;
+                    selectX_rond = x;
+                    selectY_rond = y;
+                    drawImage_hachure2();
+
+                }
+
+                endAngle = startAngle + rads_rond;
+                var radius = 222;
+                var colors = "blue";
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(centerx, centery);
+                ctx.arc(centerx, centery, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = colors;
+                ctx.fill();
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                ctx.beginPath();
+                ctx.arc(selectX_rond, selectY_rond, 20, 0, 200, false);
+                ctx.fillStyle = "black";
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(selectX_rond, selectY_rond, 17, 0, 200, false);
+                ctx.fillStyle = "white";
+                ctx.fill();
+            }
+            function hachure2_rond_stop() {
+                document.getElementById("canvas").removeEventListener("mousemove", hachure2_rond)
+                document.getElementById("canvas").removeEventListener("click", hachure2_rond_stop);
+                document.getElementById("canvas").addEventListener("click", select_hachure2);
+            }
+            function drawImage_hachure2() {
+                var temp_image = document.getElementById("hachure1_img_cercle");
+                ctx.drawImage(temp_image, 500, 100, 500, 500);
+
+            }
+            function initialisation_hachure2() {
+                ctx.beginPath();
+                ctx.arc(980, 355, 20, 0, 200, false);
+                ctx.fillStyle = "black";
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(980, 355, 17, 0, 200, false);
+                ctx.fillStyle = "white";
+                ctx.fill();
+            }
+            function select_hachure2(e) {
+
+                var x = parseInt(e.clientX - document.getElementById("canvas").offsetLeft);
+                var y = parseInt(e.clientY - document.getElementById("canvas").offsetTop);
+                console.log(x)
+                console.log(y)
+
+                if (x > selectX_rond - tolerance_hachure1 && x < selectX_rond + tolerance_hachure1) {
+                    if (y > selectY_rond - tolerance_hachure1 && y < selectY_rond + tolerance_hachure1) {
+                        console.log("bite")
+                        document.getElementById("canvas").addEventListener("mousemove", hachure2_rond)
+                        document.getElementById("canvas").removeEventListener("click", select_hachure2);
+                        document.getElementById("canvas").addEventListener("click", hachure2_rond_stop);
+                        score_hachure2()
+                        console.log(score)
+                    }
+                }
+
+            }
+            function score_hachure2() {
+
+                tol = Math.PI / 18;
+                anglesolu = fraction * Math.PI * 2
+                console.log(anglesolu)
+                console.log(endAngle)
+                if (endAngle > anglesolu - tol && endAngle < anglesolu + tol) {
+                    score = 1.0
+                } else {
+                    score = 0.0
+                }
+            }
+            function nettoyer_hachure2() {
+
+                document.getElementById("canvas").removeEventListener("mousemove", hachure2_rond)
+                document.getElementById("canvas").removeEventListener("click", hachure2_rond_stop);
+
+                document.getElementById("canvas").removeEventListener("click", select_hachure2);
+                drawBoard();
+                reference_liste(2);
+            }
+            document.getElementById("validateButton").addEventListener("click", saveResults(score, propositions));
+
+        }
+
+
+
+
+        function saveNoteToServer(note, propositions) {
             console.log(propositions);
             const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + propositions.questionnaireId;
 
@@ -336,18 +330,21 @@
                 .catch((error) => console.error("Error:", error));
         }
 
-
         // Ajoutez cette fonction pour enregistrer les résultats
-        
-       // Exécution au lancement de la page
-       window.onload = () => {
-            const propositions = JSON.parse(localStorage.getItem("infos_question"));
-            console.log(propositions);
-            localStorage.removeItem("infos_question"); // Supprimer l'élément après l'avoir récupéré
-
-            main(propositions);
+        function saveResults(notes, propositions) {
+            return function () {
+                saveNoteToServer(notes, propositions);
+                nextQuestion();
+            }
         }
-      
+
+        function nextQuestion() {
+            // Incrémenter l'index de la question actuelle
+            localStorage.setItem('currentQuestionIndex', currentQuestionIndex + 1);
+
+            // Recharger la page pour charger la prochaine question
+            location.reload();
+        }
     </script>
 </body>
 

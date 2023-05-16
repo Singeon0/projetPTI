@@ -31,6 +31,7 @@
   </div>
   <script>
     document.querySelector("form").addEventListener("submit", async (event) => {
+      localStorage.clear();
       event.preventDefault();
 
       const nomPrenom = document.querySelector('input[name="nomPrenom"]').value;
@@ -44,34 +45,51 @@
         await createNotesElevesEntry(nomPrenom, questionnaireId);
 
         // Charger les questions liées au questionnaire
-        const questions = await getQuestionsByQuestionnaireId(questionnaireId);
-        console.log(questions)
-        for (let i = 0; i < questions.length; i++) {
-          let info_question = JSON.parse(questions[i].infos_question);
-          // Ajout à infos un attribut "nomPrenom" ainsi que "questionnaireId"
-          info_question.nomPrenom = nomPrenom;
-          info_question.questionnaireId = questionnaireId;
-          if (info_question.questionnaireType == "hacher") {
-            localStorage.setItem("infos_question", JSON.stringify(info_question));
-            window.location = "../templates_questions/hacher/question.html";
-          }
-          if (info_question.questionnaireType == "construit") {
-            localStorage.setItem("infos_question", JSON.stringify(info_question));
-            window.location = "../templates_questions/construit/construit_template.html";
-          }
-          if (info_question.questionnaireType == "relier") {
-            localStorage.setItem("infos_question", JSON.stringify(info_question));
-            window.location = "../templates_questions/relier/question.html";
-          }
+        let questions = await getQuestionsByQuestionnaireId(questionnaireId);
 
-       
+        for (i = 0; i < questions.length; i++) {
+          temp = JSON.parse(questions[i].infos_question);
+          temp.nomPrenom = nomPrenom;
+          temp.questionnaireId = questionnaireId;
+          questions[i].infos_question = JSON.stringify(temp);
         }
+
+        console.log(questions);
+
+        // Stocker les questions dans le localStorage
+        localStorage.setItem('questions', JSON.stringify(questions));
+
+        // Initialiser l'index de la question actuelle à 0
+        localStorage.setItem('currentQuestionIndex', 0);
+
+        // Charger la première question
+        loadQuestion();
+
       } else {
         alert("Aucun questionnaire trouvé avec ce nom.");
       }
     });
 
-    async function createNotesElevesEntry(nomPrenom, questionnaireId) {
+    function loadQuestion() {
+      const questions = JSON.parse(localStorage.getItem('questions'));
+      const currentQuestionIndex = parseInt(localStorage.getItem('currentQuestionIndex'));
+
+      // Vérifier si toutes les questions ont été répondues
+      if (currentQuestionIndex >= questions.length) {
+        alert("Le questionnaire est terminé.");
+        return;
+      }
+
+      const question = questions[currentQuestionIndex];
+      const questionnaireType = JSON.parse(question.infos_question).questionnaireType;
+      console.log(localStorage);
+
+      // Charger la page de question appropriée
+      window.location.href = `../templates_questions/${questionnaireType}/question.html`;
+    }
+
+
+    async function createNotesElevesEntry(nomPrenom, questionnaireId) { // Ajout dans la DB de quel élève à répondu à quel questionnaire
       try {
         const response = await fetch('/api/create_notes_eleves_entry', {
           method: 'POST',

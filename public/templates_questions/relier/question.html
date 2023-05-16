@@ -204,7 +204,7 @@
 
         function saveNoteToServer(note, propositions) {
             console.log(propositions);
-            const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + propositions.questionnaireId;
+            const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + (propositions.questionnaireId);
 
             fetch("/api/save-note", {
                 method: "POST",
@@ -271,7 +271,7 @@
                 console.log(questions2);
                 console.log("len quest" + (questions2.length - 1));
                 // Recharger la page pour charger la prochaine question
-                window.location.href = `../../profs/prof.html`;
+                window.location.href = `../graphique/graphique.html`;
 
             }
         }

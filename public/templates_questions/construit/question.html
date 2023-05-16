@@ -33,9 +33,10 @@
 </html>
 <script> 
 window.onload = () => {
-    const propositions = JSON.parse(localStorage.getItem("infos_question"));
-    console.log(propositions);
-    localStorage.removeItem("infos_question"); // Supprimer l'élément après l'avoir récupéré
+  const questions = JSON.parse(localStorage.getItem('questions'));
+  const currentQuestionIndex = parseInt(localStorage.getItem('currentQuestionIndex'));
+  const question = questions[currentQuestionIndex];
+  const propositions = JSON.parse(question.infos_question);
         interval_construit(propositions)
 }
 

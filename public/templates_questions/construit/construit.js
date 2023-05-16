@@ -244,9 +244,8 @@ if(score[1][0] == 0 && score[1][1] == 0){
  }
 
  }
-
- 
  saveNoteToServer(score, props);
+ nextQuestion()
 }
 canvas.addEventListener('click',(e)=>{
     // console.log(canvas.offsetTop)
@@ -256,7 +255,7 @@ canvas.addEventListener('click',(e)=>{
 
 function saveNoteToServer(note, propositions) {
     console.log(propositions);
-    const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + propositions.questionnaireId;
+    const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + (propositions.questionnaireId);
 
     fetch("/api/save-note", {
         method: "POST",
@@ -285,3 +284,26 @@ function drawBoard(){
     ctx.strokeRect(5, 5, WIDTH - 10, HEIGHT - 10);
 }
 
+function nextQuestion() {
+    // Incrémenter l'index de la question actuelle
+    localStorage.setItem('currentQuestionIndex', currentQuestionIndex + 1);
+
+    const questions2 = JSON.parse(localStorage.getItem('questions'));
+    const currentQuestionIndex2 = parseInt(localStorage.getItem('currentQuestionIndex'));
+
+    if (currentQuestionIndex2 < (questions.length)) {
+        const question2 = questions2[currentQuestionIndex2];
+        const propositions2 = JSON.parse(question2.infos_question);
+
+        window.location.href = `../${propositions2.questionnaireType}/question.html`;
+    }
+
+    else {
+        console.log("currentindex = "+ currentQuestionIndex2);
+        console.log(questions2);
+        console.log("len quest" + (questions2.length - 1));
+        // Recharger la page pour charger la prochaine question
+        window.location.href = `../graphique/graphique.html`;
+
+    }
+}

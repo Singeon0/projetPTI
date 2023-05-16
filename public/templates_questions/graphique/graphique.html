@@ -64,11 +64,12 @@
           console.error("Erreur lors de la récupération de l'ID du questionnaire:", error);
         }
       }
-const propositions = JSON.parse(localStorage.getItem("'questions'"));
-const nomPrenom = propositions.nomPrenom;
-const questionnaireId = propositions.questionnaireId;
-console.log('nomPrenom :>> ', nomPrenom);
-console.log('questionnaireId :>> ', questionnaireId);
+      const questions = JSON.parse(localStorage.getItem('questions'));
+      const currentQuestionIndex = 0;
+      const question = questions[currentQuestionIndex];
+      const propositions = JSON.parse(question.infos_question);
+      const nomPrenom = propositions.nomPrenom;
+      const questionnaireId = propositions.questionnaireId;
 const score =  getScore(nomPrenom,questionnaireId);
 
 window.onload = () => {

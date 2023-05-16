@@ -310,23 +310,23 @@
 
         function saveNoteToServer(note, propositions) {
             console.log(propositions);
-            const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + propositions.questionnaireId;
+            const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + (propositions.questionnaireId);
 
-            // fetch("/api/save-note", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({
-            //         nomPrenom_idQuestionnaire: nomPrenom_idQuestionnaire,
-            //         nom_question: propositions.titre_question,
-            //         note_obtenu: note,
-            //         id_notes_questions: propositions.questionnaireId
-            //     }),
-            // })
-            //     .then((response) => response.json())
-            //     .then((data) => console.log(data))
-            //     .catch((error) => console.error("Error:", error));
+             fetch("/api/save-note", {
+                 method: "POST",
+                 headers: {
+                     "Content-Type": "application/json",
+                 },
+                 body: JSON.stringify({
+                     nomPrenom_idQuestionnaire: nomPrenom_idQuestionnaire,
+                     nom_question: propositions.titre_question,
+                     note_obtenu: note,
+                     id_notes_questions: propositions.questionnaireId
+                 }),
+             })
+                 .then((response) => response.json())
+                 .then((data) => console.log(data))
+                 .catch((error) => console.error("Error:", error));
         }
 
         // Ajoutez cette fonction pour enregistrer les résultats
@@ -356,7 +356,7 @@
                 console.log(questions2);
                 console.log("len quest" + (questions2.length - 1));
                 // Recharger la page pour charger la prochaine question
-                window.location.href = `../../profs/prof.html`;
+                window.location.href = `../graphique/graphique.html`;
 
             }
         }

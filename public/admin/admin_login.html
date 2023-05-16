@@ -2,18 +2,39 @@
 <html>
 
 <head>
+  <meta charset="UTF-8">
+  <nav>
+    <img  src="../logoPTI.png" alt="logo"> 
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="#">À propos</a></li>
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
   <title>Login Prof</title>
   <link rel="stylesheet" type="text/css" href="../profs/style_prof.css">
+  <style>
+    /* Styles pour agrandir les cases de saisie */
+    input[type="number"],
+    input[type="password"] {
+      width: 300px; /* Ajustez la largeur selon vos besoins */
+      height: 40px; /* Ajustez la hauteur selon vos besoins */
+    }
+  </style>
 </head>
 
-<body>
-  <form id="login-form" action="/api/login2" method="post">
-    <label for="id">ID:</label><br>
-    <input type="number" id="id" name="id"><br>
-    <label for="password">Mot de passe:</label><br>
-    <input type="password" id="password" name="password"><br>
-    <input type="submit" value="Se connecter">
+<body style="margin-top: 100px;">
+  <form id="login-form" action="/api/login2" method="post" style>
+    <center>
+      <label for="id">ID:</label><br>
+      <input type="number" id="id" name="id" class="input-field"><br><br>
+      <label for="password">Mot de passe:</label><br>
+      <input type="password" id="password" name="password" class="input-field"><br><br><br>
+      <button class="save-button" type="submit" style="display: block; margin: 0 auto;">Se connecter</button>
+    </center>
   </form>
+
   <script>
     document.getElementById('login-form').addEventListener('submit', function (event) {
       event.preventDefault();

@@ -3,25 +3,32 @@ var coordY_select_construit = [340,164,464,70,220,420,580];
 var position_construit = 1;
 var selected_construit = [false,false,false,false,false,false];
 var pair_construit = [0,2,1,4,3,6,5];
-let options_construit = [];
+let options_construit;
 const defaultValue = "............";
 let choix;
 let bonChoix;
 let mauvaisChoix;
 let animal;
 ctx = document.getElementById('canvas').getContext("2d");
-canvRect = document.getElementById('canvas').getBoundingClientRect();   
+canvRect = document.getElementById('canvas').getBoundingClientRect();  
+let props; 
 function interval_construit(prop){
+    props = prop;
      bonChoix = prop["bonChoix"];
      mauvaisChoix = prop["mauvaisChoix"];
      choix = [];
+     options_construit = [];
      animal = prop["animal"];
-     document.getElementById("titre").value = document.getElementById("titre").value + " "+animal;
+     document.getElementById("titre").textContent = (document.getElementById("titre").textContent + " "+animal);
      for(let i = 0; i < 3; i++){
         choix[i] = bonChoix[i] +','+mauvaisChoix[i];
         choix[i] = choix[i].split(',');
+        choix[i] = choix[i].map((element) => element.trimStart());
         bonChoix[i] = bonChoix[i].split(',');
         mauvaisChoix[i] = mauvaisChoix[i].split(',');
+          // Trim les éléments des listes bonChoix[i] et mauvaisChoix[i]
+        bonChoix[i] = bonChoix[i].map((element) => element.trimStart());
+        mauvaisChoix[i] = mauvaisChoix[i].map((element) => element.trimStart());
      }
     let m = 0;
     for(let j = 0; j < 3; j++){
@@ -29,12 +36,15 @@ function interval_construit(prop){
             function triAleatoire() {
                 return Math.random() - 0.5;
               }
-            options_construit[m] = options_construit[m].sort(triAleatoire);
+            options_construit[m] = [...choix[j]];
+            options_construit[m] = options_construit[m].sort(triAleatoire)
             options_construit[m].unshift(defaultValue);
+            console.log('m :>> ', m);
+            console.log('options_construit[m] :>> ', options_construit[m]);
+            console.log('choix[j] :>> ', choix[j]);
             m++;
         } 
     }
-    console.log('options_construit :>> ', options_construit);
 drawBoard();
 //drawImage_construit();
 var temp = document.createElement("SELECT");
@@ -116,7 +126,6 @@ function createSelect_construit(i){
     temp.style.height ="80px";
     temp.style.width ="200px";
     temp.style.position ="absolute";
-    console.log('options_construit :>> ', options_construit);
     for(let k = 0; k < options_construit[i].length; k++){
         var option = document.createElement("option");
         option.text = options_construit[i][k]
@@ -193,14 +202,14 @@ function score_construit(){
  // score second niveau
  for(let i =1; i<3;i++){
     if( bonChoix[1].includes(document.getElementById("select_construit"+i).value)){
-        score[1][i] = 1;
+        score[1][i-1] = 1;
         ++bilan1;
     }else{  
         if(document.getElementById("select_construit"+i).value == defaultValue){
-            score[1][i] = 9;
+            score[1][i-1] = 9;
             ++bilan2;
         }else{  
-            score[1][i] = 0;
+            score[1][i-1] = 0;
         }
     }
  }
@@ -212,15 +221,15 @@ if(score[1][0] == 0 && score[1][1] == 0){
     score[2] = 0;
 }
  for(let i =3; i<7;i++){
-    if( bonChoix[1].includes(document.getElementById("select_construit"+i).value)){
-        score[3][i] = 1;
+    if( bonChoix[2].includes(document.getElementById("select_construit"+i).value)){
+        score[3][i-3] = 1;
         ++bilan1;
     }else{  
         if(document.getElementById("select_construit"+i).value == defaultValue){
-            score[3][i] = 9;
+            score[3][i-3] = 9;
             ++bilan2;
         }else{  
-            score[3][i] = 0;
+            score[3][i-3] = 0;
         }
  }
  score[4] = 9;
@@ -236,13 +245,35 @@ if(score[1][0] == 0 && score[1][1] == 0){
 
  }
 
+ 
+ saveNoteToServer(score, props);
 }
 canvas.addEventListener('click',(e)=>{
-    console.log(canvas.offsetTop)
-    console.log("x : " + (e.clientX  -parseInt(canvas.offsetLeft)))
-    console.log("y : " + (e.clientY - parseInt(canvas.offsetTop)))
+    // console.log(canvas.offsetTop)
+    // console.log("x : " + (e.clientX  -parseInt(canvas.offsetLeft)))
+    // console.log("y : " + (e.clientY - parseInt(canvas.offsetTop)))
 })
 
+function saveNoteToServer(note, propositions) {
+    console.log(propositions);
+    const nomPrenom_idQuestionnaire = propositions.nomPrenom + "_" + propositions.questionnaireId;
+
+    fetch("/api/save-note", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            nomPrenom_idQuestionnaire: nomPrenom_idQuestionnaire,
+            nom_question: propositions.titre_question,
+            note_obtenu: note,
+            id_notes_questions: propositions.questionnaireId
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error("Error:", error));
+}
 
 function drawBoard(){
     ctx.lineWidth = 2;
@@ -250,8 +281,6 @@ function drawBoard(){
     ctx.strokeStyle = "#00abcc" 
     let HEIGHT = document.getElementById("canvas").clientHeight;
     let WIDTH = document.getElementById("canvas").clientWidth;
-    console.log('HEIGHT :>> ', HEIGHT);
-    console.log('WIDTH :>> ', WIDTH);
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
     ctx.strokeRect(5, 5, WIDTH - 10, HEIGHT - 10);
 }

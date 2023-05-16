@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login Prof</title>
+  <link rel="stylesheet" type="text/css" href="../profs/style_prof.css">
+</head>
+
+<body>
+  <form id="login-form" action="/api/login2" method="post">
+    <label for="id">ID:</label><br>
+    <input type="number" id="id" name="id"><br>
+    <label for="password">Mot de passe:</label><br>
+    <input type="password" id="password" name="password"><br>
+    <input type="submit" value="Se connecter">
+  </form>
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var id = document.getElementById('id').value;
+      var password = document.getElementById('password').value;
+
+      fetch('/api/login2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: id, password: password })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = 'admin.html?id=' + id;
+          } else {
+            alert('ID ou mot de passe incorrect.');
+          }
+        });
+    });
+
+  </script>
+</body>
+
+</html>

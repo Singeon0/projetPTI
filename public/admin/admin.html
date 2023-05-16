@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <nav>
+        <img  src="../logoPTI.png" alt="logo"> 
+        <ul>
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    
+      <link rel="stylesheet" type="text/css" href="../profs/style_prof.css">
+  <title>Administration - Créer un compte professeur</title>
+</head>
+<body>
+  <h1>Administration - Créer un compte professeur</h1>
+
+  <form action="/api/create_professeur" method="POST">
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="nom" required><br><br>
+
+    <label for="prenom">Prénom :</label>
+    <input type="prenom" id="prenom" name="prenom" required><br><br>
+
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" required><br><br>
+
+    <input type="submit" value="Créer le compte">
+  </form>
+</body>
+
+</html>

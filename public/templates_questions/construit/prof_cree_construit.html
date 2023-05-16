@@ -21,7 +21,16 @@
         }
         
         #left {
-          width: 70%;
+          padding-left:10%; 
+          width: 30%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 5%;
+        }
+        #middle {
+          width: 30%;
           height: 100%;
           display: flex;
           flex-direction: column;
@@ -44,8 +53,8 @@
           max-height: 100%;
         }
         
-        #left input {
-          width: 60%;
+        input {
+          width: 80%;
         }
         .NotlastInput{
           margin-bottom: 5%;
@@ -73,9 +82,12 @@
           border-radius: 5px; /* Ajoute un arrondi aux coins */
           transition: background-color 0.3s ease; /* Ajoute une transition de couleur au survol */
         }
-        
+  
         button[type="submit"]:hover {
           background-color: #3e8e41; /* Couleur de fond au survol */
+        }
+        h1{
+          margin-top: 1%;
         }
       </style>
 </head>
@@ -86,20 +98,30 @@
         <div id="left">     
           <label for="question-name">Nom de la question :</label>
           <input type="text"  class="NotlastInput" id="nomQuestion" >
-            <h3>Premier niveau</h3>
-          <input type="text" id="input1" class="NotlastInput" placeholder="choix1,choix2,choix3" />
-          <h3>Deuxième niveau</h3>
-          <input type="text" id="input2" class="NotlastInput" placeholder="choix1,choix2,choix3" />
-          <h3>Troisème niveau</h3>
-          <input type="text" id="input3" placeholder="choix1,choix2,choix3" />
+          <label>Bonne réponse 1er niveau</label>
+          <input type="text" id="bonInput1" class="NotlastInput" placeholder="Tête" />
+          <label>Bonne réponse 2ème niveau</label>
+          <input type="text" id="bonInput2" class="NotlastInput" placeholder="N'a pas de squellete, a un squelette" />
+          <label>Bonne réponse 3ème niveau</label>
+          <input type="text" id="bonInput3" placeholder="a des plumes, n'a pas de plumes, a des poils, n'a pas de poils" />
           <button onclick="construitTemplate()" onclick="goBack()">Enregistrer</button>
         </div>
+        <div id="middle">
+          <label id="animaux">L'animal à classer</label>
+          <input type="text" id="animalInput" class="NotlastInput" placeholder="Mésange" />
+          <label id="mauvaisLabel1">Mauvaises réponses 1er niveau</label>
+          <input type="text" id="mauvaisInput1" class="NotlastInput" placeholder="4 pattes, 6 pattes, a une coquille" />
+          <label>Mauvaises réponses 2ème niveau</label>
+          <input type="text" id="mauvaisInput2" class="NotlastInput" placeholder="a un exosquelette, a des plumes, a 2 pattes" />
+          <label>Mauvaises réponses 3ème niveau</label>
+          <input type="text" id="mauvaisInput3" placeholder="a une coquille, n'a pas de coquille, a des pattes, n'a pas de pattes" />
+        </div>
         <div id="right">
-            <h2> Exemple d'arbre phylogénétique</h2>
+            <label> Exemple d'arbre phylogénétique qui permet de classer une mésange</label>
           <img src="images/exemple_arbre_phylo.png" alt="Placeholder image" />
         </div>
       </div>
-      <button id="bouttonConsignes" onclick="swal('Consignes :' , 'Pour chaque niveau de l arbre phylogénétique veuillez entrer les réponses que peuvent choisir les élèves. Séparez les choix possibles d une virgule. Mettez en premier choix la proposition valide ')">Consignes</button>
+      <button id="bouttonConsignes" onclick="swal('Consignes :' , 'Pour chaque niveau de l arbre phylogénétique veuillez entrer les réponses que peuvent choisir les élèves. Séparez les choix possibles d une virgule. Mettez dans la première colonne les propositions valides et dans la seconde les faux choix.')">Consignes</button>
 </body>
 </html>
 <script>
@@ -114,15 +136,21 @@
     return questionnaireName;
 }
   function construitTemplate(){
-    let choix = []
+    let mauvaisChoix = [];
+    let bonChoix = [];
     for (let i =0; i < 3; i++){
-    choix[i] = document.getElementById("input"+(i+1)).value;
+      bonChoix[i] = document.getElementById("bonInput"+(i+1)).value;
+      mauvaisChoix[i] = document.getElementById("mauvaisInput"+(i+1)).value;
     }
+    let animal = document.getElementById("animal").value;
+
     const nomQuestion = document.getElementById("nomQuestion").value
     const nomQuestionnaire = parseQuestionnaireName();
     const questionJSON = {
       titre_question: nomQuestion,
-      choix : choix,
+      bonChoix : bonChoix,
+      mauvaisChoix: mauvaisChoix,
+      animal: animal,
       questionnaireType: "construit",
       questionnaireName: nomQuestionnaire,
   };

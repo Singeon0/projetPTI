@@ -24,10 +24,10 @@
   </style>
 </head>
 
-<body>
+<body style="margin-top: 100px;" >
 
   <form id="login-form" action="/api/login" method="post">
-    <br><br><br><br><br><br><br>
+    
     <center>
       <label for="id">ID:</label><br>
       <input type="number" id="id" name="id" class="input-field"><br><br>
@@ -36,6 +36,7 @@
       <button class="save-button" type="submit" style="display: block; margin: 0 auto;">Se connecter</button>
     </center>
   </form>
+  <img  src="../prof_illu.jpg" style="width: 300px  ; display: block; margin: 0 auto; margin-top: 50px;"  alt="illustration">
   <script>
     document.getElementById('login-form').addEventListener('submit', function (event) {
       event.preventDefault();

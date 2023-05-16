@@ -48,14 +48,13 @@
             const title = document.createElement("h2");
             title.textContent = `Nom :  ${questionnaire.nom}`;
 
-            const date = document.createElement("p");
-            date.textContent = `Détails du questionnaire : ${questionnaire.details_questionnaire}`;
+            // const date = document.createElement("p");
+            // date.textContent = `Détails du questionnaire : ${questionnaire.details_questionnaire}`;
 
             const id_class = document.createElement("p");
             id_class.textContent = `ID du questionnaire : ${questionnaire.Id}`;
 
             div.appendChild(title);
-            div.appendChild(date);
             div.appendChild(id_class);
             questionnairesContainer.appendChild(div);
           });

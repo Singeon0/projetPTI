@@ -57,6 +57,26 @@ app.get('/api/questionnaires/:idProf', (req, res) => {
   db.close();
 });
 
+app.post('/api/create_professeur', (req, res) => {
+  const { nom, prenom, password } = req.body;
+  const db = new sqlite3.Database('main.db');
+
+  const query = `
+    INSERT INTO utilisateurs (nom, prenom, password,nombreQuestionnaire,role)
+    VALUES (?, ?, ?,?,?);
+  `;
+
+  db.run(query, [nom, prenom, password,0,1], (err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).send("Erreur lors de la création du compte professeur");
+    } else {
+      res.status(200).send("Compte professeur créé avec succès");
+    }
+  });
+
+  db.close();
+});
 
 
 // --------------------------------------LOGIN PROF--------------------------------------
@@ -68,6 +88,34 @@ app.post('/api/login', (req, res) => {
   const query = `
   SELECT * FROM utilisateurs
   WHERE Id = ? AND password = ? AND role = '1';
+  `;
+
+  console.log(req.body);
+
+  db.get(query, [id, password], (err, row) => {
+      if (err) {
+          console.error(err.message);
+          res.status(500).json({ success: false });
+      } else {
+          if (row) {
+              res.json({ success: true });
+          } else {
+              res.json({ success: false });
+          }
+      }
+  });
+
+  db.close();
+});
+
+app.post('/api/login2', (req, res) => {
+  const id = req.body.id;
+  const password = req.body.password;
+  const db = new sqlite3.Database(databaseName);
+
+  const query = `
+  SELECT * FROM utilisateurs
+  WHERE Id = ? AND password = ? AND role = '0';
   `;
 
   console.log(req.body);

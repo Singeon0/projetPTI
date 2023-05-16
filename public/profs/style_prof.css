@@ -27,11 +27,7 @@ button {
   transition: background-color 0.3s ease;
 }
 
-buttonProf {
-  position: absolute;
-  background-color:#B6E1E7;
-  left: 1px;
-}
+
 
 p {
   font-size: 1.5rem;
@@ -53,12 +49,21 @@ label {
   
 }
 
+.line {
+  display: flex;
+  align-items: center;
+}
+
+.line span {
+  margin-right: 10px;
+}
+
 button:hover {
   background-color: #1f7ab6;
 }
 
 .save-button {
-  background-color:#B6E1E7;
+  background-color:#c58c95;
   color: #fff;
   border: none;
   padding: 20px;
@@ -151,7 +156,6 @@ nav a:hover {
 }
 
 .custom-button {
-  /* Styles spécifiques à votre bouton personnalisé */
   background-color: #B6E1E7;
   color: #ffffff;
   font-size: 16px;

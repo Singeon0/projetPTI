@@ -14,13 +14,21 @@
     <button id="validateButton" class="save-button">Valider l'appariement</button>
     <script>
 
+        // Ajoutez ces lignes pour récupérer les informations de la question à partir du localStorage
+        const questions = JSON.parse(localStorage.getItem('questions'));
+        const currentQuestionIndex = parseInt(localStorage.getItem('currentQuestionIndex'));
+        const question = questions[currentQuestionIndex];
+        const propositions = JSON.parse(question.infos_question);
+
         let left = []; // tableau des points à gauche -> permet d'accèder au contenu hors du main
 
         function updateTitle(title) {
             document.getElementById("questionnaireName").textContent = title;
         }
 
-        function main(propositions) {
+        window.onload = main();
+
+        function main() {
             // Mettre à jour le titre <h1> avec la valeur de propositions.questionnaireName
             updateTitle(propositions.titre_question);
 
@@ -238,16 +246,18 @@
 
                 const note = good / total;
                 saveNoteToServer(note, propositions);
+
+                nextQuestion();
             }
         }
 
-        // Exécution au lancement de la page
-        window.onload = () => {
-            const propositions = JSON.parse(localStorage.getItem("infos_question"));
-            console.log(propositions);
-            localStorage.removeItem("infos_question"); // Supprimer l'élément après l'avoir récupéré
+        // Ajoutez cette fonction pour passer à la question suivante
+        function nextQuestion() {
+            // Incrémenter l'index de la question actuelle
+            localStorage.setItem('currentQuestionIndex', currentQuestionIndex + 1);
 
-            main(propositions);
+            // Recharger la page pour charger la prochaine question
+            location.reload();
         }
 
 
